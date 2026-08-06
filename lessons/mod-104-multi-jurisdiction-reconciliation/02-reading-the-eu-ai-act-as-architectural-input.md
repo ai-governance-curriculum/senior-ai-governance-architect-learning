@@ -1,0 +1,117 @@
+# Reading the EU AI Act as architectural input
+
+## Why this chapter exists
+
+The EU AI Act — Regulation (EU) 2024/1689 — is the first horizontal, comprehensive, penalty-bearing AI regulation from a major jurisdiction. Published in the Official Journal on 12 July 2024, in force from 1 August 2024, applied in staged tranches through 2026 and 2027. Every level-50 AI governance architect has to read it, and — more importantly — has to read it *as an architectural input rather than as legal text*. Legal reads the Act for interpretation and penalty exposure. The architect reads it for the shape of the obligations that must land in the control library.
+
+This chapter walks the article groups the level-50 seat cares about, names the shape each group takes, and pins each group to a control-library home. The point is not to summarise the Regulation — the Regulation is 113 articles and 13 annexes and lives at `eur-lex.europa.eu` — the point is to hand the architect the map from articles to controls.
+
+## The system-classification apparatus (Articles 5-7 and Annexes I / III)
+
+Before any obligation applies, the Act classifies the system. The classification cascade — *prohibited* (Article 5), *high-risk* (Article 6, referencing Annex I harmonised-legislation systems and Annex III use-case list), *limited-risk* (transparency-triggered systems under Article 50), *minimal-risk* (everything else) — is what turns the applicability filter on. General-purpose AI models get their own classification track (Articles 51-52), separated from AI-system classification because the object of regulation is different.
+
+**Architectural takeaway.** The system classification is *the primary input to the applicability filter* on every EU-scoped control. It is not the architect's job to classify individual systems — that lives in mod-105's AIMS process and mod-106's risk taxonomy — but it is the architect's job to ensure the classification result is a first-class field on the system record, and that every control keyed to a classification tier explicitly references it. A control that says *applies to high-risk systems* without a testable link to the classification field is a control auditors cannot verify from evidence.
+
+**Shape B or shape A?** Classification is neither. It is an *upstream* obligation that determines which downstream controls apply. The library carries a single control for "AI system classification is performed and documented per Article 6 and Annex III before the system is placed on the market" — that control is shape B (there is no pre-existing analogue) — and every downstream high-risk control's applicability filter tests the *result* of that classification.
+
+## The high-risk provider obligations (Articles 8-15)
+
+This is the block where the density of architectural work is highest. Six numbered requirements — the ones every provider of an Annex-III system must design in — plus the umbrella of Article 8 that says the requirements interact and the umbrella of Article 9 that governs risk-management across all six.
+
+- **Article 9 — Risk management system.** A continuous, iterative, lifecycle-spanning risk-management process. Not one-off. Explicitly requires identification of foreseeable risks, estimation and evaluation of risks that may emerge in use, monitoring in post-market, and adoption of risk-management measures.
+- **Article 10 — Data and data governance.** Training, validation, and testing data sets meet quality criteria (relevance, representativeness, statistical properties, freedom from errors); data-governance practices are in place; provisions for bias examination and mitigation; conditions for use of special-category personal data.
+- **Article 11 — Technical documentation.** A technical documentation file (the "technical file" of Annex IV shape) is drawn up before the system is placed on the market or put into service, kept up to date, and made available to competent authorities on request.
+- **Article 12 — Record-keeping (automatically generated logs).** The system automatically records events over its lifetime; the logs enable traceability of functioning, post-market monitoring, and identification of situations that may result in risk. Minimum retention period stated in the Regulation.
+- **Article 13 — Transparency and provision of information to deployers.** The system is designed so deployers can interpret its output and use it appropriately; instructions for use are provided in a specified shape (Article 13(3) enumerates the content).
+- **Article 14 — Human oversight.** The system is designed to be effectively overseen by natural persons during use; specific oversight measures are enumerated (understanding capacity/limitations; monitoring; correctly interpreting output; deciding not to use; intervening or interrupting).
+- **Article 15 — Accuracy, robustness, and cybersecurity.** The system achieves an appropriate level of accuracy, robustness, and cybersecurity, and performs consistently in those respects throughout its lifecycle. Includes measures against attempts to alter behaviour (adversarial robustness) and against attempts to exploit system vulnerabilities.
+
+**Architectural takeaway — the mapping.** Every one of these article obligations already has, or should already have, a control-library home. Articles 9 through 15 map cleanly onto the shape mod-102 designed:
+
+| Article | Control-library family | Shape |
+|---|---|---|
+| Article 9 (risk management) | `AIC-RSK-*` (risk-management-lifecycle controls) | A — extend applicability of the enterprise risk-management-lifecycle control to EU-scoped high-risk systems; add Article 9 as a crosswalk edge. |
+| Article 10 (data and data governance) | `AIC-DAT-*` (training-data provenance, quality, bias-examination) | A — the mod-102 chapter 01 worked example already exists here. |
+| Article 11 (technical documentation) | `AIC-DOC-*` (technical file / model card composite) | A — extend the enterprise documentation control's evidence contract to include the Annex IV shape as one of the acceptable renderings. |
+| Article 12 (logs) | `AIC-LOG-*` (automatically-generated-log controls) | A or B — most enterprises already have logging controls; the Article 12 minimum retention and traceability granularity may force a shape B if the existing log control does not carry a retention SLO. |
+| Article 13 (transparency to deployer) | `AIC-DOC-*` and `AIC-TRP-*` composite | A — extend instructions-for-use content to the Article 13(3) enumeration. |
+| Article 14 (human oversight) | `AIC-HOV-*` (the mod-103 worked example lives here) | A — the enterprise human-oversight standard already carries this. |
+| Article 15 (accuracy, robustness, cybersecurity) | `AIC-ROB-*` and `AIC-SEC-*` | A — extend the applicability filter of existing robustness and cybersecurity controls to EU-scoped high-risk systems; add Article 15 as a crosswalk edge. |
+
+This is a shape-A-dominant map. That is the point. The reason the enterprise stood up a control library at all — the reason mod-102 exists — is so that the EU AI Act does not require a parallel compliance programme. It requires filter extensions and crosswalk edges.
+
+**Where shape B is warranted.** In practice, three sub-obligations under this block tend to force new controls:
+
+1. *Article 10(5) — special-category-personal-data conditions for bias detection and correction.* The exemption to process special-category data specifically for bias correction has procedural conditions the enterprise DPIA process (GDPR Article 35) does not already carry. A new control for this sub-flow is common.
+2. *Article 12 minimum retention.* If the enterprise standard log retention is shorter than the Article 12 floor, the log-retention control's SLO fails on EU-scoped systems. Rather than extend the existing SLO globally (expensive), a shape-B "EU high-risk log retention" control is often the right shape.
+3. *Article 13(3) instructions-for-use content.* The specific enumeration (system characteristics, intended purpose, level of accuracy, foreseeable circumstances leading to risk, technical performance measures, ...) is dense enough that the enterprise documentation template needs a distinct rendering; whether that becomes a new control or a new template variant of an existing documentation control is an enterprise call.
+
+## The provider / deployer / importer / distributor duties (Articles 16-29)
+
+The Act names a set of *role-specific* obligations. The level-50 architect's first job in this block is not to memorise every article but to establish *which role the enterprise plays for each system*, because the obligation set is entirely different.
+
+- **Article 16 — Obligations of providers of high-risk AI systems.** The umbrella article — the provider is responsible for compliance with Articles 9-15, quality management (Article 17), documentation retention (Article 18), automatically generated logs (Article 19 for keeping them for a specified period), corrective actions (Article 20), cooperation with authorities (Article 21), affixing CE marking (Article 48), registering the system in the EU database (Article 49 / registration duties in the current numbering), and, where established outside the Union, appointing an authorised representative (Article 22).
+- **Article 17 — Quality management system.** A documented QMS covering strategy for regulatory compliance, design/design-control/design-verification techniques, development/quality-control/quality-assurance techniques, examination/test/validation procedures, technical specifications and standards applied, systems and procedures for data management, the risk-management system per Article 9, post-market monitoring, incident reporting, communication with competent authorities, record-keeping, resource management, and an accountability framework. Effectively the ISO/IEC 42001 AIMS shape (mod-105) with EU-AI-Act specificity.
+- **Articles 18-19 — Documentation and log retention.** The technical documentation and automatically generated logs are kept for a specified period after the system is placed on the market or put into service. Duration is stated in the Regulation.
+- **Article 20 — Corrective actions and duty of information.** If a provider considers or has reason to consider that a high-risk system it has placed on the market is not in conformity, it takes the corrective actions to bring it into conformity, withdraw, disable, or recall, and informs the distributors, deployers, authorised representative and importers accordingly.
+- **Article 21 — Cooperation with competent authorities.** Providers cooperate with competent authorities on request.
+- **Article 22 — Authorised representatives.** Providers established outside the Union must appoint an authorised representative in the Union with a specified mandate.
+- **Articles 23-24 — Importer and distributor obligations.** Importers verify the provider has done what it must; distributors verify the CE marking and instructions for use.
+- **Articles 25-27 — Deployer obligations.** Take appropriate technical and organisational measures to use the system in accordance with the instructions for use, assign human oversight to natural persons with the necessary competence, monitor operation on the basis of the instructions, keep logs to the extent under their control, inform the provider or distributor of serious incidents, and — for deployers of high-risk systems that are bodies governed by public law or private operators providing public services, and for certain deployers of Annex III systems — carry out a **fundamental rights impact assessment** (Article 27) before first use.
+- **Articles 28-29 — Notified bodies.** The conformity-assessment infrastructure the Act relies on. Providers of high-risk systems that fall under Annex I harmonised legislation typically undergo third-party conformity assessment; most Annex III systems (with narrow exceptions) use internal conformity-assessment based on Annex VI.
+
+**Architectural takeaway — the addressee axis is where role clarity pays off.** The obligations on providers and the obligations on deployers are different obligations even for the same system. The applicability filter on every EU-scoped control must carry an *addressee* dimension whose enumerated values are `provider`, `deployer`, `importer`, `distributor`, `authorised_representative`. A control keyed to Article 27 (FRIA) is only triggered when the enterprise is the *deployer* and the system falls in the Article 27 scope. The system record must carry the enterprise's role for that system, per jurisdiction — an enterprise can be the provider in one distribution channel and the deployer in another.
+
+The FRIA (Article 27) is the article-16-29 block's most reliable shape-B trigger. It has no clean analogue in NIST or ISO or CSF; it is a novel EU-specific assessment shape, and it interacts with the DPIA (GDPR Article 35) without replacing it. A dedicated `AIC-FRIA-*` control is typical.
+
+The QMS (Article 17) is a shape-A. The enterprise AIMS from mod-105 already carries a management-system control; Article 17 becomes a crosswalk edge and an extension to the AIMS process to cover the Article 17(1) enumeration. Do not create a "EU AI Act QMS" control alongside the AIMS — the AIMS *is* the QMS with the right cross-references.
+
+## The transparency block (Article 50)
+
+Article 50 attaches to a set of AI systems irrespective of high-risk classification. Four categories:
+
+1. Systems that interact with natural persons — the deployer must inform the natural person they are interacting with an AI system, unless obvious from the circumstances and context.
+2. Systems that generate synthetic audio, image, video, or text — providers ensure outputs are marked in a machine-readable format and detectable as artificially generated or manipulated.
+3. Emotion-recognition or biometric-categorisation systems — deployers inform natural persons of the operation of the system.
+4. Systems that generate or manipulate image, audio, or video content constituting a deep fake — deployers disclose that the content has been artificially generated or manipulated.
+
+**Architectural takeaway — this is where UX becomes evidence.** Article 50 obligations are *disclosure* obligations (axis-3 demand). Evidence is a UX artefact (the disclosure banner, the modality-labelling widget, the machine-readable marker in the file metadata) *plus* a code-path snapshot showing the disclosure fires on the applicable path. The evidence contract on any Article-50-scoped control must call out both. A screenshot of the disclosure with no code-path evidence is a common audit finding — auditors will ask *how do you know the disclosure fires for every applicable interaction?* and "we tested it once" is not an answer.
+
+Article 50 is *deployer*-facing for categories 1, 3, 4 and *provider*-facing for category 2. That distinction matters for the addressee filter — the enterprise may be the provider of a foundation model whose outputs it does not disclose to any end user itself, but whose downstream deployers have disclosure obligations. Category 2 (machine-readable marking of synthetic outputs) is the provider-side obligation that lets those downstream disclosures actually work.
+
+Shape B is common here. Most enterprise control libraries did not carry a "synthetic-output detectability" control before Article 50; they do now.
+
+## The general-purpose AI model block (Articles 51-56)
+
+A separate track, targeting *providers of GPAI models* rather than providers of AI systems. The distinction matters: an enterprise that trains a foundation model is a *GPAI provider* under Articles 51-56; an enterprise that fine-tunes and deploys someone else's foundation model may or may not be a GPAI provider depending on the substantiality of the modification.
+
+- **Article 51 — Classification of GPAI models with systemic risk.** A GPAI model is classified as *having systemic risk* if it has high-impact capabilities evaluated on the basis of technical tools and methodologies, including a training-compute threshold specified in the Regulation (the presumptive threshold and how designation works).
+- **Article 52 — Procedure for classification.** How the Commission designates a GPAI model as having systemic risk.
+- **Article 53 — Obligations for providers of GPAI models.** Technical documentation of the model (Annex XI shape); information for downstream providers integrating the model (Annex XII shape); policy to comply with Union copyright law; a sufficiently detailed summary about the training content, following a template.
+- **Article 54 — Authorised representatives of GPAI providers established outside the Union.**
+- **Article 55 — Obligations for providers of GPAI models with systemic risk.** *In addition to* Article 53: perform model evaluation with state-of-the-art protocols including adversarial testing; assess and mitigate systemic risks at Union level; keep track of, document, and report serious incidents and possible corrective measures; ensure adequate cybersecurity protection.
+- **Article 56 — Codes of practice.** The AI Office facilitates the drawing up of codes of practice to detail how Article 53 and 55 obligations are met. Adherence to an approved code creates a presumption of conformity for the parts of the obligations the code covers.
+
+**Architectural takeaway — GPAI is a distinct sub-library.** If the enterprise trains and provides GPAI models, the reconciliation architecture treats Articles 51-56 as a *separate addressee scope* on the applicability filter. Controls in this scope map to a distinct family (`AIC-GPAI-*` in most libraries). Articles 53 and 55 substantially overlap with NIST AI RMF's Generative AI Profile (AI 600-1) and with the mod-102 chapter 03 threat-family sources — most Article 55 obligations become shape-A crosswalk edges onto pre-existing red-teaming, adversarial-robustness, incident-response, and cybersecurity controls, but the *training-content summary* obligation of Article 53 is a novel shape-B control with no clean pre-existing analogue (the template is published by the AI Office). Chapter `08-cen-cenelec-jtc-21-and-the-future-state.md` returns to Article 56 codes of practice as the presumption-of-conformity pathway.
+
+## Registration, post-market monitoring, and serious-incident reporting (Articles 49, 71, 72, 73)
+
+The four articles that produce the most *ongoing operational* obligations for the enterprise, once the system is on the market.
+
+<!-- needs-research: confirm the current article numbering in the consolidated Regulation for registration (variously referenced as Art. 49 for provider registration and Art. 71 for the EU database), and the exact wording of Art. 71's database scope. The chapter cites the article numbers from the objective (61 for registration) as an alternative pin — reconcile before publication. -->
+
+- **Registration duties.** Providers of high-risk systems register the system in the EU database before placing on the market or putting into service; deployers of certain high-risk systems who are public authorities also register. The database is publicly searchable for most fields. The obligation attaches early (before market placement) and updates as system status changes.
+- **Article 72 — Post-market monitoring by providers.** Providers establish and document a post-market monitoring system proportionate to the nature of the AI technologies and the risks of the high-risk AI system. The system actively and systematically collects, documents, and analyses relevant data — provided by deployers or collected through other sources — on the performance of high-risk systems throughout their lifetime, allowing the provider to evaluate continuous compliance with the requirements in Articles 8-15.
+- **Article 73 — Reporting of serious incidents.** Providers report serious incidents to the market-surveillance authority of the member state where the incident occurred, within timeframes stated in the Regulation (varying by incident category, with a shorter window for widespread infringement / critical-infrastructure disruption / serious harm to health or safety).
+
+**Architectural takeaway — these are the trio the operations team lives with.** They are all *process* and *notification* obligations (axis-3 demand). Post-market monitoring is a shape-A extension of the enterprise's existing monitoring / observability architecture (mod-110); the extension is the *provider-attributable* rollup, the periodic reporting shape, and the linkage back to the Article 9 risk-management system. Serious-incident reporting is nearly always shape B — the specific recipient (competent authority per member state), the specific window, and the specific content have no pre-existing enterprise-control analogue. The evidence contract on the incident-reporting control names the *delivered report*, the *acknowledgement of receipt*, and the *linkage back to the incident-management case* — three distinct artefacts, not one.
+
+Registration is shape B, and it produces a small control whose evidence is the *registration-database entry hash* plus a *change-log delta* whenever the system record is updated.
+
+## The applicability apparatus — a note on effective dates
+
+The Act's obligations apply in staged tranches. The prohibitions in Article 5 applied earliest; GPAI obligations followed; the bulk of high-risk-provider obligations apply on a later date; certain high-risk systems that are components of products regulated under Annex I harmonised legislation have a still-later date. Any control keyed to an EU AI Act article must carry an *effective-date* attribute in its applicability filter — a control whose obligation is not yet in force cannot be audited as if it were. Every regulatory-change deprecation-path field on the obligation record (chapter `07-designing-the-reconciliation-architecture.md`) must state the applicable date the record was authored against.
+
+## Summary
+
+The EU AI Act is the single densest input the reconciliation architecture consumes, but — if the control library is well-shaped — most of it lands as shape-A crosswalk edges and applicability-filter extensions, not as new controls. The high-risk provider obligations of Articles 9-15 map onto pre-existing families for risk management, data, documentation, logging, transparency-to-deployer, human oversight, robustness, and security. The role-specific duties of Articles 16-29 pay off the discipline of carrying an addressee dimension on every applicability filter, and generate one reliable shape-B control (Article 27 fundamental rights impact assessment) plus the Article 17 quality management system as a shape-A extension of the enterprise AIMS. Article 50 transparency turns UX artefacts into evidence and forces at least one shape-B (synthetic-output detectability). Articles 51-56 create a distinct GPAI addressee scope with one shape-B (Article 53 training-content summary) and shape-A extensions to the enterprise red-teaming and cybersecurity families. Articles 71-73 land the operational trio — registration, post-market monitoring, serious-incident reporting — with the incident-reporting control almost always shape B. Every EU-scoped control carries an effective-date attribute because the Act applies in tranches. The result is not a parallel EU compliance programme; it is the enterprise control library, extended along axes it was designed to extend along.
