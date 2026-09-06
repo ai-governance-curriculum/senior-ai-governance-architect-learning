@@ -1,25 +1,117 @@
 # exercise-03: Workflow Layer Shape Drill
 
-> Scaffolded by `aicg org execute-plan`. The exercise prompt lands here on the next autonomous cycle.
-
-**Estimated effort:** 3 hours
+**Estimated effort:** 4 hours
 
 ## Objective
 
-TBD.
+Produce the **workflow-layer specification** for a specified scenario — the artefact the level-50 architect takes to the AI-accountable executive, the ISO 42001 certification body, and the internal-audit committee when any of them asks *walk me through the seven flows that carry an AI system from intake to audit-facing packaging*. The deliverable set is a versioned workflow catalog, a set of state-machine diagrams (one per flow), a walked intake-and-impact-assessment runbook, an exception-handling policy, and an audit-facing-bundle spec. Together they instantiate the seven first-class flows — intake, impact assessment, control testing, evidence collection, exception handling, incident routing, audit-facing packaging — that chapter 03 fixes as the platform's workflow spine.
+
+The correctness spine is the chapter-03 invariants and failure modes. Every flow instance must carry a stable identifier and a workflow-version-pin; every state transition must write to the audit log with seat, timestamp, and version-pin; every flow terminates on a chapter-01 integration (register write, evidence-index write, ticketing handoff, comms notification); and workflow versions themselves are ratified artefacts, not silent code changes. The failure modes you are defending against are the generic-workflow-engine trap (a BPMN canvas with no first-class GRC flows), the exception-handling-as-email trap (waivers negotiated in inboxes and never bound to compensating controls), and the audit-packaging-as-ad-hoc-export trap (a bundle produced fresh each audit cycle with no point-in-time discipline). Design choices in the five artefacts below must be pinnable to an invariant they enforce or a failure mode they defend against.
+
+Draft as a senior architect briefing an apprentice. The deliverables are contractual artefacts, not essays; the requirements below name what must be present, not how to phrase it.
 
 ## Prerequisites
 
-TBD.
+- Chapter [`03-workflow-layer-intake-through-audit-packaging.md`](../03-workflow-layer-intake-through-audit-packaging.md) read once, with the seven flows, the workflow-version-pinning invariant, and the three failure modes marked.
+- Chapter [`04-rbac-and-segregation-of-duties-model.md`](../04-rbac-and-segregation-of-duties-model.md) skimmed — this exercise consumes the RBAC persona names to bind gating personas to state transitions.
+- Chapter [`01-grc-for-ai-reference-architecture-and-enterprise-integration.md`](../01-grc-for-ai-reference-architecture-and-enterprise-integration.md) skimmed — the flows terminate on the integrations fixed there (ticketing, comms, evidence-index, register).
+- Sibling modules: **mod-102** (control library the control-testing flow reads); **mod-105** (impact-assessment record shape, per ISO/IEC 42005); **mod-106** (risk-taxonomy and tier assessment the intake flow writes); **mod-107** (pre-deployment gate the intake-plus-impact-assessment flow feeds); **mod-108** (evidence-contract the evidence-collection flow writes); **mod-110** chapter [`04-article-73-serious-incident-reporting-workflow-design.md`](../../mod-110-monitoring-and-post-market-surveillance-architecture/04-article-73-serious-incident-reporting-workflow-design.md) and chapter [`05-the-soc-interface-and-ai-specific-signal-handoff.md`](../../mod-110-monitoring-and-post-market-surveillance-architecture/05-the-soc-interface-and-ai-specific-signal-handoff.md) — the incident-routing flow inherits Article 73 timeframes and reads from the SOC interface.
+- Access to primary references — ISO/IEC 42005 for the impact-assessment record shape; EU AI Act Article 26 for deployer obligations and log-keeping; EU AI Act Article 73 timeframes as an outer SLA envelope for the incident-routing flow; ISO/IEC 42001 audit expectations against which per-transition SLAs must be defensible. See [`../resources.md`](../resources.md).
 
-## Steps
+## Scenario
 
-TBD.
+You are the level-50 architect at one of the following enterprises. Choose the one whose workflow-layer shape you are **least familiar with**; that is where the exercise will teach you most. State your choice at the top of the workflow catalog and carry it into every artefact. Scenario choice constrains SLA severities (a bank's fraud-classifier incident has a different SLA than a payer's utilisation-management AI misclassification) and constrains specific incident routing (a healthcare-sector clinical-decision-support signal routes through a clinical-safety committee that the SaaS vendor does not have; a bank routes through MRM that the SaaS vendor does not have).
+
+- **A US regional bank** (Northbrook Financial-style, per mod-101 exercise-02 and mod-102 exercise-01) with ~40 AI systems: fraud classifiers, document extraction, an internal RAG legal assistant, a customer-facing generative chat, third-party AI SaaS integrations. Colorado + NYC deployments; EU expansion planned. An SR 11-7-aligned MRM programme and an ISO/IEC 27001 ISMS already in place; internal audit function reports to the audit committee.
+- **A global healthcare payer / provider** with clinical-decision-support pilots, patient-facing chat, coding automation, and utilisation-management AI. US federal HIPAA scope; EU AI Act relevance for European insurance subsidiaries; multiple US state deployments including Illinois and California. A classical clinical-safety oversight committee reports to the CMO; internal audit reports to the audit committee.
+- **A B2B SaaS platform vendor** shipping GenAI-augmented HR-tech capabilities into enterprise customers across the US, UK, EU, and Singapore. Customers include public-sector deployments (subject to OMB M-25-21 shape) and financial-services enterprises (subject to SR 11-7 vendor-review shape). Internal audit is a small function co-sourced with a Big Four provider.
+
+## Deliverables
+
+Author five artefacts in a working directory of your choice.
+
+1. **`workflow-catalog-v1.0.0.yaml`** — one entry per flow (seven total), each with `id`, `inputs`, `outputs`, `owner_role`, `state_machine` (states + permitted transitions + gating persona per transition), `sla` per transition, sibling-system handoffs (ticketing / comms / evidence-index / register), and `version`.
+2. **`state-machine-diagrams/`** — one diagram per flow (Mermaid or ASCII), seven files. States, transitions, and the RBAC persona (from chapter 04) authorised to fire each transition.
+3. **`intake-and-impact-assessment-runbook.md`** — a walked example of a new tier-3 system arriving into intake and completing impact assessment (ISO/IEC 42005-shaped). Shows artefacts produced at each step, sibling-system writes, and seats that authorised each transition.
+4. **`exception-handling-policy.md`** — severity ladder, ratifying persona per severity (from chapter 04 RBAC), compensating-control requirement, expiry rules, mandatory pre-expiry review, audit-log discipline. Explicit position on how a lapsed exception is treated (chapter-03 failure-mode-(d) — silent roll-forward is refused).
+5. **`audit-facing-bundle-spec.md`** — the artefact the audit-facing-packaging flow produces. Reproducible to point-in-time state; joins across mod-102, 105, 106, 107, 108, 109, and mod-110 PMS store; signable by `head-of-ai-governance`.
+
+## Requirements
+
+### `workflow-catalog-v1.0.0.yaml`
+
+- Exactly **seven entries**, one per flow: `intake`, `impact-assessment`, `control-testing`, `evidence-collection`, `exception-handling`, `incident-routing`, `audit-facing-packaging`. Each entry carries a stable `id` that the chapter-04 RBAC bundles can bind against; do not rename ids across catalog versions without a documented migration note.
+- Each entry names its `inputs` (upstream artefacts and events), `outputs` (downstream artefacts and events terminating on chapter-01 integrations), `owner_role` (the seat accountable for the flow's design, using chapter-04 persona names), and `version` (semver, matched at the top of the file).
+- Each entry carries a `state_machine` block naming the states, the permitted transitions between them, and the gating persona per transition. Every transition writes to the audit log with `seat`, `timestamp`, and `workflow_version_pin`; the catalog must state this at the top as an invariant and then rely on it, not repeat it per transition.
+- Each transition carries an `sla` (time-to-transition, escalation seat if breached). SLAs must be enterprise-defensible against ISO/IEC 42001 audit expectations and, where applicable, against EU AI Act Article 73 timeframes (for the incident-routing flow specifically).
+- Each entry names its **sibling-system handoffs** — which of the chapter-01 integrations it writes to (ticketing for work items; comms for stakeholder notifications; evidence-index for artefact registration; register for tier / risk / control status).
+- **Cross-flow dependency edges** are named explicitly at the top of the file — for example `intake -> impact-assessment` (a tier-2-or-higher intake mandates an impact-assessment instance); `incident-routing -> exception-handling` (a routed incident may require a compensating-control-backed exception); `evidence-collection -> audit-facing-packaging` (the bundle joins evidence-collection outputs). The edge set must be a DAG at the flow level; loops belong inside a flow's state machine, not between flows.
+
+### `state-machine-diagrams/`
+
+- Seven files, one per flow, in Mermaid or ASCII. Each file names the flow and pins its `workflow_version` header to the catalog version.
+- States are **named** (not numbered); transitions are **named** (verbs, not arrows-with-no-label). Every transition names the chapter-04 gating persona authorised to fire it. Referenceable persona names include `ai-governance-analyst`, `ai-risk-engineer`, `ai-evaluation-engineer`, `senior-ai-governance-architect`, `head-of-ai-governance`, third-line audit, `business-system-owner`, `regulator-facing-counsel`, and `ai-infra-security-lead`. If a transition can be fired by more than one persona, name each; if it requires two-person integrity, mark it explicitly.
+- **Loops** — rework transitions, re-approval transitions, re-open-after-closure transitions — must be shown explicitly. A state machine that only flows forward is an unenforceable straw-man; every real flow has at least one rework loop.
+- Terminal states must name the chapter-01 integration write that concludes the flow (register write, evidence-index write, ticketing closure, comms notification, or a combination).
+
+### `intake-and-impact-assessment-runbook.md`
+
+- Walked example of a new **tier-3 system** arriving into intake and completing impact assessment. Choose a concrete system consistent with the scenario (e.g. a customer-facing generative chat for the bank; a utilisation-management AI for the payer; a resume-screening GenAI feature for the SaaS vendor).
+- Per step, name the **artefact produced** and bind it to its authoring module: mod-102 initial control-set classification; mod-106 tier assessment (the artefact that classifies the system as tier-3); mod-108 evidence-contract seed (the initial evidence-collection scaffold); mod-105 impact-assessment record (ISO/IEC 42005-shaped); mod-107 pre-deployment-gate readiness pack.
+- Per step, name the **sibling-system writes**: which ticketing tickets open, which comms notifications go out, which register writes land, which evidence-index rows are created.
+- Per step, name the **seat that authorised the transition** using chapter-04 persona names. The runbook is the concrete instance that shows the abstract state machine actually enforces persona-gating.
+- Include the moment the flow terminates and cite which chapter-01 integration receives the terminating write.
+
+### `exception-handling-policy.md`
+
+- **Severity ladder** with at least three tiers (illustrative shapes: `minor` / `material` / `critical`, or `tier-1` / `tier-2` / `tier-3`); each tier states the rationale for its threshold, not just the label.
+- **Ratifying persona per severity**, drawn from chapter 04. Higher tiers require higher-level ratification; the top tier ratifies at `head-of-ai-governance` or above, with `regulator-facing-counsel` co-sign where a regulator-visible control is being suspended.
+- **Compensating-control requirement.** Every exception carries a compensating-control template — what control (from the mod-102 library) is being substituted in, who owns it, how it is tested, and how its evidence lands in the mod-108 evidence-index. A no-compensating-control exception is refused by construction.
+- **Expiry rules per severity.** Every exception carries an expiry window (shorter for higher severity). No open-ended exceptions.
+- **Mandatory pre-expiry review calendar entry** — the exception-handling flow schedules a review event some named number of days before expiry; the ratifying persona is the review chair.
+- **Audit-log discipline.** Every downstream artefact touching a system with an active exception carries an `exception_active=true` flag visible in the register, the evidence-index, the impact-assessment record, and any audit-facing bundle. The policy must state this and pin it to the audit-log invariant from chapter 03.
+- **Position on lapsed exceptions.** State explicitly that a lapsed exception is not silently rolled forward — the flow re-enters the exception-handling state machine at a specific state, and the system either has its compensating control ratified as permanent (moving to a control-library amendment via mod-102), the underlying control gap is remediated (closing the exception), or the system is taken out of service. Chapter-03 failure-mode-(d) — silent roll-forward — is refused, and the policy names how the workflow layer enforces the refusal.
+
+### `audit-facing-bundle-spec.md`
+
+- **Content manifest** — the exhaustive list of stores the bundle joins across, one entry per store, each with a citation to the module that owns the store: mod-102 (control library), mod-105 (impact-assessment records and CAPA), mod-106 (risk register and tier assessments), mod-107 (pre-deployment-gate outcomes and internal-audit-sampling records), mod-108 (evidence-index and evidence artefacts), mod-109 (third-party / vendor governance records), and the mod-110 PMS event store.
+- **Lineage manifest** — every artefact in the bundle traces to an authoritative source per chapter-01 invariant 1 (single source of truth). The spec names how the trace is recorded (e.g. `source_store_id`, `source_record_id`, `source_version`, `retrieved_at`).
+- **Point-in-time reconstruction discipline** — the bundle is reproducible from register state at a named `bundle_as_of` timestamp. A bundle produced today for last-quarter-end must be byte-equivalent (or semantically equivalent under a stated normalisation) to a bundle produced yesterday for the same period. The spec names the reconstruction mechanism (event-sourced replay, snapshot-plus-log, or effective-dating) and pins the discipline as a testable invariant.
+- **Signing chain.** `head-of-ai-governance` signs the bundle; the signature covers a content-hash, the `bundle_as_of` timestamp, the workflow-version-pin of the audit-facing-packaging flow that produced it, and the catalog version. A `certification-body-facing metadata block` names the certification body (ISO 42001, ISO 42006, or a sector regulator), the audit engagement id, and the scope statement (references the mod-105 AIMS SOA).
+- **Explicit non-scope.** State at the top of the spec that the audit-facing-bundle spec does not select the workflow-engine PRODUCT (that is a chapter-02 exercise) and does not author the RBAC MODEL (that is a chapter-04 exercise — this exercise consumes the RBAC persona names). If the spec drifts into product selection or RBAC-model authoring, the boundary has been crossed.
+
+## Starter guidance
+
+Author the **intake flow first**. Every other flow's state machine has a state that reads *waiting on intake artefact X* or *reading tier from intake register write Y*; if the intake artefacts are not fixed, the other six flows drift. Once intake is stable, author impact-assessment against it (mod-105 shape), then control-testing and evidence-collection in parallel (they share the mod-102 and mod-108 seams), then exception-handling and incident-routing (they share the routing-to-compensating-control seam), and finally audit-facing packaging (which joins across everything else and cannot be authored coherently until the upstream flows commit their outputs).
+
+The **exception-handling ladder is where most first-cut policies collapse**, and they collapse the same way: by conflating *exception* (a time-boxed, compensating-control-backed, ratified deviation from a control expectation) with *waiver* (an ad-hoc email agreement that a control does not apply). Author the exception-handling policy on the assumption that the reader wants to file a waiver — the policy's job is to make that impossible without either turning the waiver into a proper exception with all the ratification, compensating control, expiry, and review discipline, or turning it into a mod-102 control-library amendment. If your policy allows a naked waiver anywhere, it has failed.
+
+The **audit-facing bundle is reproducible or it is not an audit-facing bundle**. The test is simple: the bundle produced today for last-quarter-end must equal (semantically, under a stated normalisation) the bundle produced yesterday for the same period. If it does not — if the bundle drifts because a downstream store was updated, or because an exception was closed after the period, or because a control was renamed — the point-in-time discipline is broken and the bundle is an ad-hoc export, not an audit artefact. Every design choice in the bundle spec should be testable against this reproducibility test.
+
+Do **not** design flows independent of chapter-04 personas. Every transition in every state machine needs a named gating persona (or a named multi-persona quorum); a transition without a gating persona is not enforceable, because the workflow engine has no basis on which to permit or deny the transition. If chapter-04 has not yet fixed the persona list, use the persona names given above as a working set and cite the chapter-04 exercise as the ratifying authority. Do not invent new persona names in this exercise — that is the chapter-04 exercise's remit.
+
+Draft SLAs against **enterprise-defensible reasoning**, not aspirational round numbers. An impact-assessment SLA of *72 hours* is only defensible if the enterprise has committed staffing to it; a `head-of-ai-governance` ratification SLA of *4 hours* is not defensible for a global enterprise across timezones. State the reasoning next to the number, at least for the flow's headline SLAs.
+
+Where you cite a specific vendor product (a specific workflow engine, a specific ticketing system, a specific comms platform), mark the citation `<!-- needs-research -->`. This exercise fixes the flow shape, not the vendor selection; vendor claims that survive into the final artefacts without the marker are treated as unverified.
 
 ## Acceptance criteria
 
-TBD.
+- [ ] Chosen scenario is stated at the top of `workflow-catalog-v1.0.0.yaml` and every artefact is coherent against it.
+- [ ] `workflow-catalog-v1.0.0.yaml` contains exactly seven entries, one per flow (`intake`, `impact-assessment`, `control-testing`, `evidence-collection`, `exception-handling`, `incident-routing`, `audit-facing-packaging`), each with `id`, `inputs`, `outputs`, `owner_role`, `state_machine`, `sla` per transition, sibling-system handoffs, and `version`.
+- [ ] The catalog states the audit-log-per-transition invariant (seat, timestamp, workflow-version-pin) once at the top and every transition inherits it.
+- [ ] Cross-flow dependency edges are named explicitly at the top of the catalog and form a DAG at the flow level; intra-flow loops live inside state machines.
+- [ ] `state-machine-diagrams/` contains seven files, one per flow, each pinned to the catalog `workflow_version`. States and transitions are named; every transition names its chapter-04 gating persona (or persona quorum); at least one rework or re-approval loop is shown per flow.
+- [ ] Every state-machine terminal state names the chapter-01 integration write that concludes the flow.
+- [ ] `intake-and-impact-assessment-runbook.md` walks a tier-3 system through intake and impact assessment, naming per step the artefact produced (bound to mod-102, mod-106, mod-108, mod-105, mod-107), the sibling-system writes (ticketing, comms, evidence-index, register), and the seat that authorised each transition.
+- [ ] `exception-handling-policy.md` names a severity ladder of at least three tiers with rationale; ratifying persona per severity from chapter 04; compensating-control template referencing the mod-102 library and the mod-108 evidence-index; expiry-window per severity; mandatory pre-expiry-review calendar entry with named chair; `exception_active=true` flag visible in every downstream artefact; explicit refusal of silent roll-forward of a lapsed exception with the workflow-layer enforcement mechanism named.
+- [ ] `audit-facing-bundle-spec.md` names a content manifest joining across mod-102, 105, 106, 107, 108, 109, and mod-110; a lineage manifest carrying `source_store_id`, `source_record_id`, `source_version`, `retrieved_at` (or equivalents); a point-in-time reconstruction mechanism that makes the bundle reproducible at a named `bundle_as_of` timestamp; a signing chain terminating at `head-of-ai-governance`; a certification-body-facing metadata block.
+- [ ] Point-in-time reproducibility is stated as a testable invariant of the audit-facing bundle (a bundle produced today for last-quarter-end equals a bundle produced yesterday for the same period, under a stated normalisation).
+- [ ] The explicit non-scope statement — workflow-engine PRODUCT selection and RBAC MODEL authoring are out of scope — is present in the audit-facing-bundle spec (and, if space allows, in the workflow catalog).
+- [ ] RBAC personas are drawn from the chapter-04 persona list (`ai-governance-analyst`, `ai-risk-engineer`, `ai-evaluation-engineer`, `senior-ai-governance-architect`, `head-of-ai-governance`, third-line audit, `business-system-owner`, `regulator-facing-counsel`, `ai-infra-security-lead`); no new personas are invented in this exercise.
+- [ ] Every vendor-specific claim and every standard-specific timeframe or clause number that has not been verified against a primary source is marked `<!-- needs-research -->` — no invented ISO clause numbers, EU AI Act article timings, or vendor capability claims.
 
 ## Stretch goals
 
-TBD.
+- **Workflow-version-upgrade migration plan.** Author the plan for a major-version bump of the impact-assessment flow (say, `2.0.0` -> `3.0.0`) across a tier-3 system that has an *active* impact-assessment instance mid-flight. The plan states which in-flight state maps to which new state, which transitions require re-ratification, how the audit log records the version transition per instance, and how the workflow-version-pin invariant is preserved (an instance never silently changes version-pin mid-flight).
+- **Incident-routing decision tree.** Author the decision tree for an inbound signal from the mod-110 chapter-05 SOC interface: the branches that lead to an internal-only CAPA (mod-105 chapter 09), to a mod-110 chapter-04 Article 73 escalation, to an exception-handling entry if a control is suspended, and to a mod-109 vendor-notification if the underlying signal is a third-party model provider issue. The tree must name the decision seat at each branch and the SLA to reach a branch decision.
+- **Mock audit-facing bundle.** Produce a mock bundle for a synthetic tier-3 system that spans all seven artefact classes (control assessments, impact assessment, tier assessment, pre-deployment-gate outcome, evidence artefacts, vendor governance record, and PMS events), at a named `bundle_as_of` timestamp, signed (mock) by `head-of-ai-governance`, with the lineage manifest populated. Then produce the same bundle a day later and confirm the reproducibility test passes.

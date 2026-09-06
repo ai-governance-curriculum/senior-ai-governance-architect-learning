@@ -1,25 +1,126 @@
 # exercise-04: Public Sector Blueprint Drill
 
-> Scaffolded by `aicg org execute-plan`. The exercise prompt lands here on the next autonomous cycle.
-
-**Estimated effort:** 3 hours
+**Estimated effort:** 4 hours
 
 ## Objective
 
-TBD.
+Author a **full sector adaptation record for a US federal agency contractor** (per chapter 06's blueprint) *and*, applied to the same enterprise, a **lightweight adjacencies overlay** that carries Canada TBS ADM, UK ATRS, and Singapore AI Verify obligations without forking the reference architecture (per chapter 08's overlay pattern). The pair exercises the full-blueprint-versus-adjacency distinction chapter 08 draws — a US-federal contractor programme is dense enough to warrant a full SAR, whereas the CA / UK / SG public-sector programmes are handled as filter values, evidence-contract line items, and policy guards layered on the same reference profile.
+
+The correctness spine is chapter 01's six invariants (I1 single-source catalog, I2 sector applicability values on the profile, I3 evidence extends per obligation, I4 policy-as-code parameterisation, I5 single AIMS with scope addendum, I6 risk taxonomy augmented not replaced) and its two failure modes (the fork temptation and applicability-filter sprawl). Every design choice must be pinnable to an invariant as the choice that enforces it or to a chapter-06 / chapter-08 failure mode as the choice that defends against it. The adjacencies overlay is the harder half of the exercise — the temptation is to author the CA / UK / SG programmes as if each were a full SAR. Resist. Chapter 08's whole architectural claim is that public-sector adjacencies compose as overlays reading existing artefacts rather than as new blueprints.
 
 ## Prerequisites
 
-TBD.
+- Chapter [`01-the-sector-adaptation-methodology.md`](../01-the-sector-adaptation-methodology.md) read once, with the six invariants and the sector-adaptation-record schematic marked.
+- Chapter `06-us-federal-agency-contractor-blueprint.md` read once (authored in parallel — reference by filename if not yet present); covers OMB M-25-21 and M-25-22, FedRAMP Moderate and High authorisation shape, NIST SP 800-53 controls, NIST AI RMF alignment, US AISI interfaces, and the agency Chief AI Officer role.
+- Chapter `08-public-sector-adjacencies-canada-uk-singapore.md` read once (authored in parallel — reference by filename if not yet present); covers Canada TBS *Directive on Automated Decision-Making*, UK *Algorithmic Transparency Recording Standard*, Singapore IMDA / AI Verify Foundation *AI Verify* testing framework, and the overlay pattern that keeps each adjacency lightweight.
+- Mod-102 chapter 04 profile mechanism and chapter 06 authoring lifecycle skimmed — the SAR's `profile` block dereferences into these.
+- Mod-104 obligation register read for the public-sector obligations named: OMB M-25-21 / M-25-22, FedRAMP baselines, NIST SP 800-53 Rev. 5, NIST AI RMF 1.0 and its Generative AI Profile, TBS *Directive on Automated Decision-Making* and its Algorithmic Impact Assessment, UK ATRS Tier 1 / Tier 2 rendering, AI Verify testing categories. Every obligation referenced in the SAR or the overlay must exist as a `OBL-...` entry in the register.
+- Mod-105 chapter 04 AIMS scope statement (the addendum I5 patches against), mod-107 chapter 03 pre-deployment gate design (the gate the AI Verify report feeds), mod-108 evidence architecture (the schema registry the ATRS render reads), mod-109 chapter on third-party attestation flow-down (for M-25-21 subcontractor language), mod-110 chapter on post-market surveillance baselines (which the AI Verify report supplements), mod-112 chapter 01 council and reserved-matters register (for adjacencies ratification).
 
-## Steps
+## Scenario
 
-TBD.
+You are the level-50 architect at a hypothetical US-headquartered technology enterprise with the following public-sector footprint:
+
+- **US federal (full blueprint).** The enterprise sells a cloud-hosted AI platform to US federal civilian agencies. The platform holds a FedRAMP Moderate authorisation today; a new agency programme is procuring against a FedRAMP High baseline and the enterprise is authorising against High for that programme. Some agency use cases fall within OMB M-25-21's *high-impact AI* definitions <!-- needs-research: exact definitional criteria per M-25-21 --> and are subject to the minimum-practices attestation the agency Chief AI Officer signs. Procurement flow-down of M-25-22 acquisition expectations reaches selected subcontractors.
+- **Canadian federal (adjacency).** A Canadian subsidiary sells a case-triage decision-support tool to a Canadian federal department. The tool is in scope of the *Treasury Board Directive on Automated Decision-Making* and requires an Algorithmic Impact Assessment at the applicable impact level <!-- needs-research: TBS ADM impact-level tiering nomenclature and thresholds -->.
+- **UK central government (adjacency).** The enterprise sells a public-health-analytics tool to a UK central-government department. The department requires the enterprise to support the department's authoring of an Algorithmic Transparency Recording Standard (ATRS) record — Tier 1 minimum and Tier 2 for the higher-impact deployments <!-- needs-research: ATRS Tier 1 / Tier 2 threshold definitions -->.
+- **Singapore (adjacency).** A Singapore engineering hub whose product is deployed to a Singapore public-sector customer runs the product through AI Verify testing categories at the customer's request and delivers the resulting report as part of the deployment package.
+- **Commercial private-sector business.** The enterprise also runs a commercial private-sector business (US, EU, and APAC) outside these public-sector programmes; that business is out-of-scope for this exercise except where the SAR or the overlay explicitly names an interface (for example, whether an inference boundary is shared with the commercial platform and, if so, how the FedRAMP addressee-scope guard applies).
+
+State the enterprise's operating entities, the geographical footprint of each public-sector programme, and the material AI systems whose classification falls into scope at the top of `sar-us-federal-contractor-v1.0.yaml`. Carry those choices consistently across every artefact.
+
+## Deliverables
+
+Author five artefacts in a working directory of your choice.
+
+1. **`sar-us-federal-contractor-v1.0.yaml`** — the full sector adaptation record for the US federal contractor programme, filled in against the chapter-01 schematic and defended against the six invariants per chapter 06.
+2. **`public-sector-adjacencies-overlay-v1.0.yaml`** — the lightweight overlay covering Canada TBS ADM, UK ATRS, and Singapore AI Verify per chapter 08. Deliberately *not* a SAR; carries filter values, evidence-contract line items, policy guards, and reserved-matters additions but explicitly declines a new control library, a new AIMS scope, and a new risk taxonomy.
+3. **`agency-caio-interface-playbook.md`** — the playbook the federal-programme lead uses when interfacing with an agency Chief AI Officer for the M-25-21 minimum-practices attestation cycle (initial submission, evidence pack expected, cadence, escalation on findings, contract-modification interlock).
+4. **`atrs-record-rendering-guide.md`** — the guide describing how the mod-108 evidence architecture renders an ATRS Tier 1 / Tier 2 record from artefacts the enterprise already produces (evidence-schema queries, field-mapping table, rendering-cadence expectation, review-and-attestation flow with the UK department).
+5. **`ai-verify-run-plan.md`** — the operational plan for running AI Verify testing on the Singapore product and consuming the resulting report as mod-107 gate evidence and as a mod-110 post-market-surveillance baseline supplement.
+
+## Requirements
+
+### `sar-us-federal-contractor-v1.0.yaml`
+
+- **Record header.** `id: SAR-us-federal-contractor-v1.0`, `ratified_by:` naming the ai-governance-council (mod-112 chapter 01), `ratification_date:` (may be `TBD`), `reference_architecture_version:` block with the mod-102 catalog, reference profile, mod-105 AIMS scope, mod-106 risk taxonomy, and mod-104 obligation-register versions the record composes against.
+- **Sector block.** `identifier: public-sector-us-federal-contractor`; `scope_narrative:` a short paragraph naming the enterprise entities, the agencies served, the FedRAMP posture, and the material AI systems in scope.
+- **Anchor regulations.** Horizontal (EU AI Act — noting non-applicability if the scope is US-only, so the reader sees the choice made; NIST AI RMF 1.0 and its Generative AI Profile). Sector-specific (OMB M-25-21, OMB M-25-22, FedRAMP Moderate and High baselines, NIST SP 800-53 Rev. 5, US AISI voluntary-testing interfaces where applicable) — each with `obligation_register_ids:` dereferencing into mod-104.
+- **Profile.** `id: PROFILE-us-federal-contractor-v1.0`, `derives_from: enterprise-reference-profile v<X.Y>`, `delta_summary:` naming which reference-catalog controls are additionally selected (typically SP 800-53 High-baseline additions), which reference parameters are tuned (FedRAMP-mandated crypto and boundary parameters), and which are made mandatory that were optional. Applicability-filter overrides on the *supervisory-authority-scope* / *addressee-scope* dimensions (US-federal-agency values) and the *fedramp-authorisation-level* dimension if newly registered — each override defended against I2 with a rationale.
+- **Evidence-contract extensions.** Line items keyed by `obligation_id` (never by sector name — I3). At minimum, extensions for: the M-25-21 minimum-practices attestation package the agency CAIO consumes; the FedRAMP System Security Plan and continuous-monitoring artefacts referenced from the mod-108 registry (not duplicated); the NIST AI RMF Govern / Map / Measure / Manage function evidence the SP 800-53 controls anchor; the M-25-22 acquisition-clause flow-down evidence the third-party register (mod-109) surfaces.
+- **Policy-as-code guards.** Each guard a parameterisation of an existing mod-103 template (I4). At minimum: an addressee-scope guard preventing a US-federal-classified workload's inference request from touching a non-FedRAMP-authorised inference boundary; a data-residency guard for FedRAMP High regions; a subcontractor guard blocking a third-party provider without an M-25-22 flow-down attestation.
+- **AIMS scope addendum.** A per-sector paragraph patched against the mod-105 chapter 04 statement (I5) — inclusions naming the US-federal contractor programme, exclusions naming any commercial-platform components deliberately kept outside the certified scope with rationale, and interfaces stating how the addendum composes with the enterprise scope.
+- **Risk taxonomy augmentation.** Any added categories mapped as *specialisations* of reference categories with parent identifiers (I6); at minimum an appetite trigger for a FedRAMP authorisation-decision material adverse event and one for an M-25-21 minimum-practices finding.
+- **Additional roles.** At minimum a federal-programme lead role (level and owner packet route stated), and the interface to the agency CAIO role (which is *not* an enterprise role — clarify the boundary).
+- **Reserved-matters additions.** Council-level reserved matters for: initial FedRAMP High authorisation decision; M-25-21 minimum-practices attestation ratification cycle; M-25-22 flow-down posture; NIST AI RMF profile-adoption declaration.
+- **Deprecation-path notes.** Any regulations transitioning during the record's validity window (for example, prior OMB memoranda M-24-10 / M-24-18 superseded by M-25-21 / M-25-22) with the mod-104 obligation-register transition edges cross-referenced <!-- needs-research: exact supersession relationship between the M-24 and M-25 series -->.
+- **Invariant defence.** A `pinning:` block or per-section footnote naming which invariant (I1-I6) each design choice enforces or which failure mode (fork temptation / applicability sprawl) it defends against.
+
+### `public-sector-adjacencies-overlay-v1.0.yaml`
+
+- **Overlay header.** `id: OVERLAY-public-sector-adjacencies-v1.0`, `ratified_by:` naming the ai-governance-council, `not_a_sar_because:` a paragraph stating explicitly why this is an overlay rather than three separate SARs — the three programmes are individually low-density, share a common addressee-scope pattern (public-sector deployer), and their obligations compose as filter values, evidence extensions, and policy guards rather than as a new catalog, AIMS, or taxonomy.
+- **Composes-against.** References `SAR-us-federal-contractor-v1.0` where the two records interact (for example, a policy guard whose template is already parameterised for FedRAMP addressee-scope is re-parameterised here for the Canadian, UK, and Singapore addressee-scope values on the same template).
+- **Adjacency blocks.** One block per jurisdiction (`canada-tbs-adm`, `uk-atrs`, `singapore-ai-verify`), each containing:
+  - **Anchor obligations.** Cross-references into mod-104 for TBS *Directive on Automated Decision-Making* including AIA, UK ATRS, and AI Verify.
+  - **Applicability-filter values.** Additions to *existing* filter dimensions (typically *addressee-scope* — Canadian-federal-department, UK-central-government-department, Singapore-public-sector-customer). Explicitly *not* new dimensions unless defended against the applicability-sprawl failure mode with a filter-parsimony rationale.
+  - **Evidence-contract line items.** Additions to *existing* controls' evidence contracts keyed by obligation identifier — for TBS ADM, an AIA-package line item; for ATRS, a Tier 1 / Tier 2 rendering line item; for AI Verify, a testing-report line item. Each references artefacts the enterprise already produces (I3 discipline).
+  - **Policy-as-code guards.** Parameterisations of existing mod-103 templates — a Canadian-data-residency egress guard, a UK-department addressee-scope guard, a Singapore-workload guard where relevant.
+  - **Reserved-matters additions.** Council items at first material engagement per adjacency and at any obligation update.
+- **Explicit non-additions.** A `non_additions:` block naming what the overlay does *not* add: no new control library entries; no new AIMS scope statements (adjacencies are covered by the mod-105 chapter 04 scope's public-sector inclusion); no new risk-taxonomy categories (the reference categories are sufficient for the adjacencies' risk shape). Each non-addition is defended against the fork-temptation failure mode.
+- **Invariant defence.** A `pinning:` block per adjacency and one for the overlay as a whole, pinning each choice to an invariant or a failure mode.
+
+### `agency-caio-interface-playbook.md`
+
+- **Trigger and cadence.** The trigger that initiates an interface with an agency CAIO (contract award naming the enterprise as a covered provider for a high-impact AI use case) and the cadence of subsequent engagements (initial attestation, periodic re-attestation, event-driven interactions on findings).
+- **Evidence pack.** The pack the enterprise assembles for the agency CAIO's attestation cycle, composed of mod-108 artefacts (no net-new production — I3 discipline).
+- **Escalation flow.** The internal escalation path when a CAIO finding requires an above-appetite acceptance (mod-106 into mod-112 council reserved matter).
+- **Contract-modification interlock.** The path by which a CAIO finding that requires a change to the M-25-22 clause set triggers a contract-modification workflow with the agency contracting officer, and how the change is reflected in the mod-109 third-party register (if flow-down subcontractors are affected).
+- **Roles.** The federal-programme lead as primary; the head of AI governance as escalation; the level-50 architect (this role) as the artefact-integrity reviewer for the pack.
+
+### `atrs-record-rendering-guide.md`
+
+- **Read-not-produce claim.** State up front that ATRS rendering reads existing mod-108 artefacts and does not require net-new artefact production (I3 discipline). If any ATRS field cannot be sourced from an existing artefact, the guide names the mod-108 chapter 04 schema-registry extension that would carry it, but the extension is a separate authoring exercise — the guide's default posture is read-only.
+- **Field-mapping table.** ATRS Tier 1 / Tier 2 fields <!-- needs-research: exact ATRS Tier 1 / Tier 2 field enumerations from the UK CDDO / Central Digital and Data Office standard --> mapped to mod-108 schema-registry entries; where a Tier 2 field requires composition across artefacts, state the composition rule.
+- **Rendering cadence.** When the ATRS record is refreshed (typically on material change to the underlying system per the UK department's expectation) and who owns the refresh.
+- **Attestation flow.** How the enterprise delivers the rendered draft to the UK department for the department's review and publication (the department, not the enterprise, publishes the ATRS record); the enterprise's role is content provision and factual accuracy.
+- **Failure-mode defence.** Explicit statement that the rendering guide does *not* create a new evidence architecture for ATRS; ATRS is a rendering of the existing architecture. Failure mode being defended: the fork temptation applied to evidence.
+
+### `ai-verify-run-plan.md`
+
+- **Scoping.** The Singapore product's classification under AI Verify's testing categories <!-- needs-research: current AI Verify testing-category enumeration from the AI Verify Foundation --> and the customer's stated expectation for coverage.
+- **Run cadence.** When testing is run initially (pre-deployment as a mod-107 gate input) and on what triggers it is re-run (material model or data change, customer request, PMS baseline drift).
+- **Consumer interfaces.**
+  - **Mod-107 gate evidence.** How the AI Verify report is registered in the mod-108 evidence architecture and cited by the mod-107 pre-deployment gate as one of the gate's evidence inputs; the gate decision authority is unchanged (the mod-107 gate owner), and the AI Verify report is one input among several.
+  - **Mod-110 post-market surveillance baseline.** How the report's measured baselines are folded into the mod-110 PMS baseline for the product so that later PMS observations can detect drift against a substantive baseline rather than a purely internal one.
+- **Report-lifecycle roles.** The Singapore engineering-hub lead as report producer; the level-50 architect as artefact-integrity reviewer; the mod-107 gate owner as consumer for the deployment gate decision; the mod-110 PMS owner as consumer for the baseline.
+- **Failure-mode defence.** Explicit statement that the AI Verify run plan does *not* introduce a new evidence pipeline; the report is a mod-108 artefact under an evidence-schema registry entry (existing or newly registered under mod-108 chapter 04, but not a bespoke pipeline). Failure mode being defended: applicability sprawl through a Singapore-specific evidence architecture.
+
+## Starter guidance
+
+Draft the SAR first and the overlay second. The SAR is longer and denser, but it is a straightforward instantiation of the chapter-01 schematic against a well-mapped regulatory frame. The overlay is shorter and harder — the discipline is in what it *refuses* to author. Every time you find yourself reaching for a new control, a new AIMS scope statement, or a new risk category to handle a CA / UK / SG requirement, stop and ask which of the six invariants you are about to violate. In almost every case the requirement is expressible as an evidence-contract line item on an existing control, as an applicability-filter value on an existing dimension, or as a parameterisation of an existing policy template.
+
+The ATRS rendering guide is the cleanest test of the overlay discipline. ATRS is a public transparency artefact that composes fields the enterprise's evidence architecture already produces — system description, purpose, data description, evaluation results, ownership, contact points. If the rendering guide requires the enterprise to produce a net-new artefact to satisfy an ATRS field, either the mod-108 evidence architecture has a gap the field exposes (in which case the fix belongs in mod-108, not in an ATRS-specific pipeline) or the field is not actually required at the tier the enterprise is targeting. Chapter 08's argument is that ATRS is a rendering pattern, not an evidence-generation pattern; the guide should demonstrate that argument concretely.
+
+The AI Verify run plan sits at a slightly different point on the spectrum. AI Verify's testing categories genuinely produce measurements the enterprise may not otherwise take at the same rigour; the plan can register the report as a mod-108 artefact under a schema-registry entry (existing or new) without violating I3 because the report is *evidence per obligation*, not a sector-forked pipeline. The failure to avoid is running AI Verify testing through a Singapore-specific evidence system that duplicates the mod-108 architecture; register the report inside mod-108 and let mod-107 and mod-110 consume it as they would any other evidence.
+
+The agency CAIO interface playbook is where subcontractor flow-down (M-25-22) meets the third-party programme (mod-109). Chapter 06's discipline is that the flow-down clause language is registered against the mod-109 provider-facing controls' evidence contracts (as I3 line items), and the third-party attestation programme picks up the flow-down evidence in its normal cadence — the playbook does not run a parallel M-25-22 attestation programme outside mod-109. The playbook's job is to describe the interfaces, not to duplicate them.
+
+Reserved-matters additions are a place the SAR and the overlay both touch the mod-112 council. Keep the additions specific and infrequent. A reserved matter that fires every quarter is a status meeting; a reserved matter that fires on FedRAMP authorisation, on M-25-21 attestation ratification, on a material AIA outcome, on an ATRS Tier-change ratification, and on an AI Verify baseline breach is a reserved matter with real teeth. Chapter 01's cadence-failure-mode reminder applies.
 
 ## Acceptance criteria
 
-TBD.
+- [ ] Enterprise scenario is stated at the top of `sar-us-federal-contractor-v1.0.yaml` and every artefact is coherent against it.
+- [ ] `sar-us-federal-contractor-v1.0.yaml` fills in the chapter-01 schematic — header, sector block, anchor regulations with obligation-register cross-references, profile delta with applicability-filter overrides, evidence-contract extensions keyed by obligation identifier, policy-as-code guards as parameterisations, AIMS scope addendum, risk-taxonomy augmentation with parent references, additional roles, reserved-matters additions, deprecation-path notes, and an invariant-pinning block.
+- [ ] `public-sector-adjacencies-overlay-v1.0.yaml` carries one block per jurisdiction (Canada TBS ADM, UK ATRS, Singapore AI Verify), each with anchor obligations, applicability-filter values, evidence-contract line items, policy-as-code guards, reserved-matters additions, and an explicit `non_additions:` block.
+- [ ] `agency-caio-interface-playbook.md` names trigger and cadence, evidence pack composed of existing mod-108 artefacts, escalation flow into mod-106 / mod-112, contract-modification interlock with mod-109, and roles.
+- [ ] `atrs-record-rendering-guide.md` states the read-not-produce claim up front, carries a field-mapping table to mod-108 registry entries, states rendering cadence and attestation flow, and defends against the fork-temptation failure mode.
+- [ ] `ai-verify-run-plan.md` states scoping, run cadence, mod-107 gate-evidence interface, mod-110 PMS baseline interface, report-lifecycle roles, and defends against the applicability-sprawl failure mode.
+- [ ] Distinct pass/fail: the adjacencies overlay remains lightweight — no forked control library, no new AIMS scope, no new risk taxonomy. The overlay's `non_additions:` block makes the refusals explicit and each is defended.
+- [ ] Every design choice is pinnable to a chapter-01 invariant (I1-I6) as enforcer or to a chapter-06 / chapter-08 failure mode as defence; a `pinning:` block or footnote in each YAML makes this explicit.
+- [ ] Unverified specifics — OMB memo definitional criteria, FedRAMP baseline enumerations, TBS ADM impact-level tiering, ATRS Tier field enumerations, AI Verify testing-category enumerations, agency CAIO title conventions — carry `<!-- needs-research -->` rather than a guessed value. Do not invent standards-body language or memo section numbers.
 
 ## Stretch goals
 
-TBD.
+- **Subcontractor flow-down clause.** Draft the flow-down clause language the enterprise incorporates into subcontracts for a subcontractor whose product is in scope of the M-25-21 minimum-practices attestation. The clause names the attestation cadence, the evidence the subcontractor supplies, the audit right the enterprise reserves, and the termination trigger on sustained non-attestation. Cross-reference to the mod-109 third-party programme's provider-facing evidence contracts.
+- **ATRS Tier 2 ratification minute.** Draft the internal minute for the ai-governance-council's ratification of an ATRS Tier 2 record before the UK department publishes it. Use the mod-112 chapter 01 minute-of-record template (six required fields plus process discipline) and demonstrate that the ratification is a reserved matter under the adjacencies overlay.
+- **AI Verify report cover letter.** Draft the cover letter that accompanies the AI Verify report when the mod-107 gate owner consumes it — mapping the testing outputs to gate criteria, naming which gate decisions the report substantiates, and stating where the report supplements versus replaces existing gate evidence. The letter is a mod-108-registered artefact in its own right; state the schema-registry entry it composes against.

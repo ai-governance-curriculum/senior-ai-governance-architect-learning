@@ -1,25 +1,136 @@
 # exercise-01: Audit Log Architecture Drill
 
-> Scaffolded by `aicg org execute-plan`. The exercise prompt lands here on the next autonomous cycle.
-
 **Estimated effort:** 3 hours
 
 ## Objective
 
-TBD.
+Produce the **audit-log substrate design** for a specified enterprise scenario — the append-only, provenance-attested, retention-controlled record layer that every downstream evidence artefact in this module binds to. The deliverable is a decision document plus four supporting schemas: an event contract, a retention matrix traced to citation, an immutability and chain-of-custody design, and a storage-tiering and access-model design.
+
+The substrate you draw here is the module's *anchor artefact*. Chapter 03's card family sources its provenance fields from your event contract. Chapter 04's ML-BOM and SLSA attestations ingest into your log families and depend on your immutability posture. Chapter 05's regulator-facing packet templates fill from your retention matrix and rely on the chain-of-custody discipline you specify. Chapter 06's OSCAL representation of the assurance case cites the events your substrate produces. Chapter 07's coordination contract with the AIMS internal audit programme (mod-107) queries this substrate as its primary evidence source. If the substrate is under-specified here, every subsequent exercise inherits the gap; if it is over-specified against the wrong regime obligations, every subsequent exercise inherits the miscalibration.
 
 ## Prerequisites
 
-TBD.
+- Chapter [`02-audit-log-architecture-retention-and-immutability.md`](../02-audit-log-architecture-retention-and-immutability.md) read once, with the three log families, the shared event contract, the six invariants, and the two failure modes marked.
+- The mod-107 chapter 02 walk-through of the pre-deployment gate evidence-contract discharge (the substrate is the source the contract discharges against) and mod-107 chapter 03 walk-through of the ongoing assurance operating rhythm (the substrate is the source the rhythm's queries run against).
+- The mod-105 chapter 06 walk-through of ISO/IEC 42001 Clause 7.5 documented-information discipline (the substrate is one class of documented information the AIMS must control).
+- The mod-106 chapter on the risk register (the substrate holds governance-family events referencing risk-register entries by ID; the substrate is *not* the register itself).
+- Access to primary references — Regulation (EU) 2024/1689 Articles 11 (technical documentation), 12 (automatically generated logs) <!-- needs-research: verify Article 12 minimum retention duration against the final text -->, 72 (post-market monitoring), and 73 (reporting of serious incidents); SR 11-7 (2011) model documentation guidance; ISO/IEC 42001:2023 Clause 7.5 (documented information) and Clause 9.1 (monitoring, measurement, analysis, evaluation); HIPAA Security Rule §164.312(b) (audit controls); FDA 21 CFR Part 11 (electronic records for regulated device software); PCI DSS 4.0 requirement 10 (log-and-monitor all access); RFC 3161 (trusted timestamping); Sigstore Rekor (transparency log for signed artefacts); OpenSSF SLSA (supply-chain level attestation framework). See [`../resources.md`](../resources.md).
 
-## Steps
+## Scenario
 
-TBD.
+You are the level-50 architect at one of the following enterprises. Choose the one whose retention and sector-overlay shape you are least familiar with; that is where the drill will teach you most. State your choice at the top of the deliverable.
+
+- **(A) A US regional bank** (Northbrook Financial-style, per mod-101 exercise-02) with ~40 AI systems: fraud classifiers, document extraction, an internal RAG legal assistant, a customer-facing generative chat, and third-party AI SaaS integrations. Colorado + NYC deployments today, EU expansion planned for the next fiscal year. An SR 11-7-aligned MRM programme and an ISO/IEC 27001 ISMS already in place; ISO/IEC 42001 AIMS in build. The substrate you author must satisfy SR 11-7 model-documentation reproducibility, ISO/IEC 42001 Clause 7.5 documented-information control, the (imminent) EU AI Act obligations, and the state overlays — Colorado SB 24-205 risk-management-programme records and NYC Local Law 144 AEDT bias-audit preservation.
+- **(B) A global healthcare payer / provider** with clinical-decision-support pilots, a patient-facing chat, coding automation, and utilisation-management AI. US federal HIPAA scope with an established Security Rule §164.312(b) audit-controls posture; EU AI Act relevance via a European insurance subsidiary; FDA 21 CFR Part 11 electronic-records scope for regulated device software components; multi-state deployments across California, Illinois, New York. The substrate you author must satisfy HIPAA audit-controls retention, FDA Part 11 electronic-records posture, EU AI Act obligations for the European subsidiary, and the AIMS Clause 7.5 discipline.
+- **(C) A B2B SaaS HR-tech vendor** shipping GenAI-augmented HR-tech into enterprise customers across the US, UK, EU, and Singapore. Customer overlays include SR 11-7 vendor-review shape (for financial-services customers), NYC Local Law 144 for AEDT deployments, EU AI Act high-risk employment classification, UK Data Protection Act discipline for UK customers, and MAS FEAT-style expectations for Singapore financial-services customers. The substrate you author must satisfy the customer-overlay superset (the enterprise itself is not directly regulated by SR 11-7 but its financial-services customers audit it against that shape), the EU AI Act provider obligations, and the AIMS Clause 7.5 discipline.
+
+## Deliverables
+
+Author five artefacts in a working directory of your choice. Each stands alone; together they compose the substrate design a downstream implementer (platform team, security engineering, evidence-engineering function) can build against.
+
+1. **`audit-log-architecture.md`** — the decision document that pins the three log families, the four substrate properties, the six invariants with detection tests, and the two failure modes with architectural defences.
+2. **`event-schema.yaml`** — the machine-readable event contract every family adheres to, with family-specific extensions declared inline.
+3. **`retention-matrix.yaml`** — the per-event-class × per-scenario-overlay retention matrix, with each horizon traced to an article, clause, or sector-rule number.
+4. **`immutability-and-chain-of-custody.md`** — the WORM / hash-chain / external-notarisation choice per family, the chain-of-custody discipline across the four moments (production, ingest, query, handoff), and the break-glass procedure discipline.
+5. **`storage-tiering-and-access-model.md`** — the hot / warm / cold / deep-cold tiering with query-latency and cost targets, and the access model separating producers, consumers, and operators.
+
+## Requirements
+
+### `audit-log-architecture.md`
+
+Decide and justify **each** of the following:
+
+- **The three log families, declared with owners.** For each family — model and system lifecycle, data lifecycle, governance workflow — name the family owner (a seat, not a person), the producer roles, the primary consumer roles, and the retention driver. Include one paragraph per family justifying why an event that lives in that family belongs there and not in one of the others.
+- **The four substrate properties, enforced per family.** For each family, describe how *append-only*, *provenance-attested*, *retention-controlled*, and *queryable at the consumer's horizon* are enforced — the mechanism, the identity that enforces it, the failure mode if the mechanism is bypassed.
+- **Sector-overlay declaration.** Enumerate the sector overlays your scenario is subject to (bank: SR 11-7 vendor scope on third-party AI SaaS; Colorado SB 24-205; NYC LL144; EU AI Act on expansion — healthcare: HIPAA §164.312(b); FDA Part 11; EU AI Act via European subsidiary — B2B SaaS: SR 11-7 as customer-imposed obligation; NYC LL144; EU AI Act; UK DPA; MAS FEAT-shape). For each overlay, state which log family or families it attaches to and which event classes it constrains.
+- **Six invariants, named with detection tests.** Restate each of the six chapter-02 invariants — (1) every material event captured under the shared contract, (2) producer identity bound to the event, (3) retention obligation composition is authored not inferred, (4) immutability is verified not assumed, (5) chain of custody records at all four moments, (6) access-model separation is enforced by policy not convention — and for each, specify the detection test the substrate exposes (a query, a scheduled audit script, an operator-facing alert) that would surface a violation.
+- **Two failure modes, with architectural defences.** For each of the two chapter-02 failure modes — (1) the log everyone writes to but no one can read, (2) the substrate that becomes queryable only after a subpoena — name at least one architectural move you have made in your design to prevent it in your scenario.
+- **Non-scope statements.** At least three things you *chose not to* include in the substrate and why. Candidates: the operational observability stack (Prometheus / OpenTelemetry / APM — a distinct layer with different consumers and different retention); the risk register itself (mod-106 — the substrate holds *references* to register entries by ID); the SoA (mod-105 — the substrate holds governance-family events referencing controls the SoA declares but is not the SoA); the model registry itself (chapter 04 — the substrate holds ingest and promotion events referencing registry artefacts but is not the registry); the enterprise's SIEM (a consumer of the substrate for security-relevant events, not the storage of record).
+
+### `event-schema.yaml`
+
+Author the shared event contract every family adheres to, plus family-specific extensions declared inline. At minimum:
+
+- **`event_id`** — globally unique identifier (uuidv7 or comparable time-ordered scheme). Justify the choice.
+- **`event_time` / `ingest_time`** — producer clock and substrate clock, both required, with the source of each declared (producer service identity; substrate ingest gateway). State how clock skew is reasoned about at query time.
+- **Timestamp attestation source.** Name whether raw events carry an RFC 3161 timestamp, a Sigstore Rekor entry reference, both, or neither, and justify per family. Consequential decision records should carry an external attestation; high-volume lifecycle events may not.
+- **`event_type`** — from a controlled vocabulary per family. Enumerate at least six event types per family (lifecycle example: `training-run-started`, `training-run-completed`, `evaluation-run-completed`, `model-registry-ingested`, `deployment-promoted`, `rollback-executed`; data example: `dataset-ingested`, `dataset-transformation-applied`, `dataset-redaction-applied`, `licence-changed`, `dsar-modification-applied`, `dataset-retired`; governance example: `aia-drafted`, `pre-deployment-gate-decided`, `exception-approved`, `incident-triaged`, `capa-opened`, `regulator-interaction-logged`).
+- **`subject`** — the entity the event acts on (model / dataset / system / control / risk-entry / packet / other) with the registry ID and version.
+- **`actor`** — the system component plus the human or service identity plus the authentication context (OIDC subject, service-account fingerprint, mesh identity), with the correlation ID that ties the actor's session to a top-level request or pipeline run.
+- **Provenance signature.** The producer's signature (cosign key, Sigstore keyless bound to OIDC issuer, in-toto attestation payload) and the substrate's counter-signature (the ingest receipt). Both required. State the key-management posture (HSM, KMS, keyless).
+- **Hash-chain neighbour references.** For families whose immutability strategy is hash-chained append-only (governance workflow at minimum), specify the fields that reference the neighbouring log entries — the previous entry's digest, the Merkle-tree leaf index, the periodic root anchor reference.
+- **`retention_policy_tag`** — the tag the retention matrix keys off (e.g. `lifecycle.tier-4.eu-scope`, `data.phi.hipaa`, `governance.decision-record.regulator-facing`). The tag drives the horizon; the horizon is not encoded in the event.
+- **`source_of_truth_reference`** — for events that reference state stored elsewhere (a model registry entry, a dataset manifest, a risk-register entry), the URI plus the hash of the referenced artefact at event time. The substrate holds hashes; the state lives in the source of truth.
+- **PII and regulated-content classification.** Every event carries a classification (`no-personal-data`, `pseudonymous-reference-only`, `redaction-controlled-payload`, `phi`, `pci`, `trade-secret`, etc.) that drives redaction discipline. State the rule that PII shall never appear in the substrate payload — the payload carries a pseudonymous reference; the referent lives in the system of record.
+
+Include the family-specific extension blocks for each family showing the additional fields a lifecycle event, a data event, and a governance event each carry beyond the shared contract.
+
+### `retention-matrix.yaml`
+
+Produce a matrix keyed on **event class × scenario overlay**. For each cell:
+
+- **Retention horizon** — the duration the event class is retained under the applicable overlay. Every horizon must trace to a citation — an article number (Regulation (EU) 2024/1689 Article 12, Article 18 <!-- needs-research: verify Article 18 record-keeping horizon -->), a clause number (ISO/IEC 42001 Clause 7.5.3), or a sector-rule reference (HIPAA §164.312(b), FDA 21 CFR Part 11 Subpart B <!-- needs-research: verify the specific subpart for retention -->, PCI DSS 4.0 requirement 10 sub-requirement <!-- needs-research: verify the current PCI DSS 4.0 sub-requirement number for log retention -->). Where a horizon is unverifiable at authoring time, mark `<!-- needs-research: ... -->` rather than guess.
+- **Immutability posture required** — WORM object lock (COMPLIANCE mode), hash-chained append-only, external notarisation, or a composition. The posture must be defensible against the citation — Article 12 automatically-generated-logs obligation demands *at least* provenance-attested and retention-controlled; SR 11-7 model documentation reproducibility demands the underlying event stream be immutable enough that the documented model can be reconstructed.
+- **Storage tier target at each horizon segment** — hot (day 0 to day N), warm (day N+1 to year M), cold (year M+1 to horizon-minus-1), deep-cold or archive (final horizon segment). State the tier transition trigger (age-based, access-frequency-based, event-driven).
+- **Destruction procedure at end-of-horizon** — the operator role that authorises destruction, the pre-destruction hold check (is legal hold active?), the destruction attestation (certificate of destruction if the regime requires one — HIPAA does; FDA Part 11 has specific device-record considerations), and the entry the destruction itself lands as in the governance workflow log.
+- **Legal-hold override.** For every event class, state how legal hold suspends the horizon and the tier transitions, and who can apply and release the hold.
+
+Include a *composition rule* at the top of the file: for a given event, `horizon = max(regime, sector-overlay, enterprise-schedule, legal-hold.horizon-if-active)`.
+
+### `immutability-and-chain-of-custody.md`
+
+Decide and justify **each** of the following per family:
+
+- **WORM vs hash-chain vs external-notarisation choice, per family.** For each family, state the primary immutability mechanism and the composition with secondary mechanisms. Typical answers: lifecycle-family raw stream → hash-chained append-only (Trillian or comparable) with periodic Merkle-root notarisation to Rekor and daily anchor to S3 Object Lock COMPLIANCE; data-family raw stream → same pattern; governance-family raw stream → hash-chained with per-decision-record cosign signature plus Rekor entry plus RFC 3161 timestamp for regulator-facing decisions. Justify against the family's consumers — a certification body sampling the governance family expects to verify signatures per record; a plaintiff's expert reconstructing a training run expects the substrate to prove the neighbouring events were not inserted post-hoc.
+- **Chain-of-custody artefacts.** For a regulator-shown artefact, enumerate the artefacts the substrate produces that bind the shown-to-regulator artefact to the produced artefact: (1) the event digest for the production event, (2) the Rekor entry reference for the producer signature, (3) the signer identity (OIDC issuer plus subject, or cosign key fingerprint), (4) the timestamp source (RFC 3161 TSA name or Rekor inclusion time), (5) the substrate ingest receipt digest, (6) the query event digest for the consumer's original retrieval, and (7) the handoff event digest for the moment the artefact left the substrate. State how a downstream party can verify the chain independently — the verification script or the runbook the enterprise's audit-liaison seat runs when a regulator or plaintiff asks.
+- **Break-glass discipline.** Enumerate the break-glass procedures the substrate supports — legal-hold implementation, DSAR-driven personal-data modification, incident-driven quarantine, regulator-directed action. For each: name the authoriser (general counsel for legal hold; DPO for DSAR; incident-response coordinator for quarantine; the AI-accountable executive or general counsel for regulator-directed action); the notification set that must be informed within the SLA (typically internal audit, the CRO, the head of AI governance); the audit-trail entry that lands in the governance workflow family (event type, required fields, retention posture — break-glass events typically retain against the maximum of the underlying obligation and the enterprise's minimum for break-glass records); and the verification hook — how a certification body sampling the substrate can verify the break-glass did not silently occur and did not silently exceed its authorised scope.
+
+State the rule explicitly: a break-glass without a governance-family log entry is a bypass, not a break-glass; the design shall not admit a code path that permits substrate write access without emitting the break-glass event.
+
+### `storage-tiering-and-access-model.md`
+
+Author the tiering and access model that operationalises the substrate.
+
+- **Tier definitions with query-latency and cost targets.** For each tier — hot, warm, cold, deep-cold — state:
+  - The horizon segment the tier covers (hot: last 30 to 90 days per family; warm: last 1 to 5 years per family and overlay; cold: retention-horizon minus final segment; deep-cold or archive: final horizon segment for regime obligations that extend a decade or more).
+  - The query-latency target (hot: seconds, backing SIEM and analyst interactive tooling; warm: minutes, backing sampling and periodic review; cold: hours to a day, retrieve-on-request restored to warm for query; deep-cold: multiple days with retrieval SLA).
+  - The relative cost target (hot: high per-GB with full indexing; warm: moderate with partial indexing on correlation-ID fields; cold: low per-GB, unindexed; deep-cold: minimum per-GB, retrieval-fee bearing).
+  - The tier-transition trigger (age-based lifecycle policy vs event-driven vs manual for legal-hold cases) and the requirement that every tier transition emit a governance workflow log event.
+- **Access model separating producers, consumers, and operators.**
+  - **Producers.** Write events; may read own recent events for debugging; cannot delete; cannot modify; cannot read at scale. Producer identity is bound to the event signature. Enumerate the producer roles per family (lifecycle: platform SRE, MLOps, model owners; data: data engineering, MLOps auto-triggered transformations, governance analysts for redaction decisions, legal for licence changes; governance: analysts, risk engineer, evaluation engineer, gate chair, incident coordinator, internal audit engagement lead).
+  - **Consumers.** Read events; queries are themselves logged as governance-family events; cannot write; findings written back through the producer path with the consumer's authorship. Enumerate the consumer roles: second-line assurance analyst, evaluation engineer, risk engineer, internal audit, external providers (auditor from a certification body, sector regulator examiner, plaintiff's expert under discovery). State the pre-clearance discipline that gates external-provider consumer access — the audit-liaison seat that authorises the external provider's identity, the scope-limited role the external provider is granted, the notification cascade to legal and the CISO when external access is opened.
+  - **Operators.** Own the substrate's own configuration — retention policies, WORM key management, tier transitions, break-glass execution. Small named group; hardware-token-bound identity. Every operator action is a governance workflow log event; operator actions on tier-4 systems require multi-party approval.
+- **Audit trail on every access.** Every read — producer-own-recent-read, consumer query, operator configuration read — emits a governance workflow log event. State how the query-log volume is managed (hot tier only; sampled at defined rate for aggregate analytics; full events for scoped-role queries such as internal audit sampling and external-provider access) without allowing "query events are noisy so we turn them off" to become a bypass.
+
+## Starter guidance
+
+- Draft `audit-log-architecture.md` *before* the schemas. The decision document forces the trade-offs; the schemas instantiate them. A schema authored without the family decisions upstream will encode an implicit family model that later exercises will find brittle.
+- Do not conflate operational observability with the audit-log substrate. Your OpenTelemetry / Prometheus / APM stack is engineering observability with a retention horizon of days to weeks and a consumer set of SREs; the substrate is an evidence layer with retention horizons of years and consumers including regulators. Operational logs may *feed* the substrate for specific event classes; they are not the substrate.
+- Do not treat "immutable" as a checkbox. A WORM policy the platform team's ops runbook can silently bypass is not WORM. Design the *verification* — the audit script, the scheduled control that samples object-lock status, the Rekor cross-check — as part of the substrate, not as a separate audit chore.
+- Every retention decision must trace to a clause, article, or rule number. "Long enough" is not a retention decision; it is a compliance failure waiting to be surfaced. Where you cannot verify a horizon from primary source at authoring time, mark `<!-- needs-research: ... -->` and specify the resolution owner.
+- Break-glass must leave an audit trail a certification body can sample. The break-glass event's retention posture is typically longer than the underlying obligation, because it is the evidence of the *decision to break glass*, not of the *activity that was broken-glass to*.
+- Do not push all events through the same retention posture. Family-3 governance workflow events (sign-off decisions, gate outcomes, regulator interactions) retain longer than family-1 lifecycle events under most overlays — the decision-of-record survives the activity-of-record. Check your citations before flattening.
+- Do not design a substrate where an event class captures only a subject-line-only summary. A regulator asks for the underlying content, not the summary; if the substrate carries "evaluation run completed: passed" without the run's manifest reference, the substrate has failed. Every event either carries the content, or carries a hash-attested reference to where the content lives.
+- The substrate is *not* the risk register (mod-106), the SoA (mod-105), or the model registry (chapter 04). Each of those is a system of record the substrate references by ID. Get the reference discipline right so the register can evolve without invalidating substrate history.
 
 ## Acceptance criteria
 
-TBD.
+- [ ] Scenario (A / B / C) is stated at the top of the deliverable; substrate is coherent against the scenario's overlay superset.
+- [ ] All five artefacts (`audit-log-architecture.md`, `event-schema.yaml`, `retention-matrix.yaml`, `immutability-and-chain-of-custody.md`, `storage-tiering-and-access-model.md`) are present.
+- [ ] Three log families each have a named owner (seat, not person), a producer roster, a consumer roster, and an event-type controlled vocabulary of at least six event types.
+- [ ] Retention matrix has one row per event class × per scenario overlay, and every horizon traces to a citation (article, clause, or sector-rule reference) or is marked `<!-- needs-research: ... -->` with the resolution owner.
+- [ ] Break-glass discipline is present in `immutability-and-chain-of-custody.md` with a named authoriser, a notification set, a governance-family log event, and a certification-body-facing verification hook.
+- [ ] WORM vs hash-chain vs external-notarisation choice is made and justified per family; the composition (e.g. hash-chained raw stream + Rekor-anchored daily root + WORM for filed regulator packets) is stated.
+- [ ] Storage tiers (hot / warm / cold / deep-cold) are named per family with query-latency and cost targets; every tier transition is defined to emit a governance workflow log event.
+- [ ] Access model separates producers (write, no delete, no read-at-scale), consumers (read, queries logged, no write), and operators (small named group, hardware-token-bound identity, every action logged, multi-party approval on tier-4 impact).
+- [ ] Six invariants are each named with a specific detection test the substrate exposes (a query, a scheduled audit script, an operator-facing alert).
+- [ ] Two failure modes are each named with at least one architectural defence in your specific design.
+- [ ] Every unverified citation — EU AI Act article number, ISO clause number, sector-rule identifier, retention duration — is marked `<!-- needs-research: ... -->`. No invented article numbers, clause numbers, or duration figures.
+- [ ] Non-scope section names at least three things deliberately excluded from the substrate and why (candidates: operational observability, risk register, SoA, model registry, SIEM).
 
 ## Stretch goals
 
-TBD.
+- **Add a sector overlay your base scenario does not already require.** For the bank (A), add Colorado SB 24-205 with its risk-management-programme records preservation and derive the family-3 retention impact <!-- needs-research: verify the specific SB 24-205 records-preservation duration and effective date -->. For the B2B SaaS (C), add MAS FEAT-shape obligations for the Singapore financial-services customer subset and specify how a customer overlay maps to a substrate the vendor operates. For the healthcare (B), add MDR / IVDR for a device-classified component and derive the family-1 and family-2 retention impact against the device-lifecycle horizon.
+- **Sketch the OSCAL representation of the substrate.** Preview chapter 06 and exercise 05 by drafting the OSCAL `system-security-plan` fragment that describes the substrate as an implemented control set with the automated evidence sources named (the substrate's own query interface as an OSCAL `component` with `implementation-status` fields).
+- **Simulate a chain-of-custody replay for a specific event over a 3-year horizon.** Choose one event class (e.g. a tier-4 pre-deployment gate decision). Walk the event forward through its production, ingest, initial query by internal audit at year 1, hot-to-warm transition at day 90, warm-to-cold transition at year 2, external-provider query at year 3 for a regulator inquiry, and handoff for a subpoena response. Note at each moment which substrate artefact records the transition and how the verification chain remains intact.
+- **Sketch a retention-policy migration playbook.** Assume the substrate is in production against overlay set N; the enterprise picks up overlay N+1 (e.g. the bank's EU expansion goes live, adding EU AI Act obligations to a substrate previously designed only against SR 11-7 + Colorado + NYC). Walk the migration: how the retention matrix changes, how in-flight events get re-tagged, how already-transitioned cold-tier objects are re-evaluated against the new horizon, how the governance workflow log records the migration itself so a certification body can audit the transition later.

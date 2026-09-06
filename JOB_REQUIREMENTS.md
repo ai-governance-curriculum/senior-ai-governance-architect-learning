@@ -2,10 +2,23 @@
 
 **Role level:** 50 (architectural design authority — AI Governance family)
 **Track:** `senior-ai-governance-architect-learning`
-**Research window:** 2026-05-08 → 2026-08-06 (last 90 days)
-**Today:** 2026-08-06
+**Research window:** 2026-06-08 → 2026-09-06 (last 90 days; rolled forward from 2026-05-08 → 2026-08-06 on the 2026-09-06 refresh)
+**Today:** 2026-09-06
 
 This file documents the requirements catalog used to seed the Senior AI Governance / Risk Architect curriculum. Raw normalised data lives in [`.aicg/job-requirements.json`](.aicg/job-requirements.json); the planned curriculum lives in [`.aicg/curriculum-plan.json`](.aicg/curriculum-plan.json).
+
+## Status — refresh pass complete (2026-09-06)
+
+This packet was refreshed on **2026-09-06**, 30 days after the 2026-08-06 comprehensive live pass. Targeted WebSearch / WebFetch against job aggregators (ai-governance-jobs.com, axialsearch.com, ziprecruiter, indeed, glassdoor), employer career pages, and the frontier-lab / hyperscaler / public-sector clusters flagged as prior-cycle gaps surfaced **4 newly-in-window architect-relevant postings**: Anthropic Compliance Governance & Oversight Lead (Dublin, est 2026-08), State Street Global Head of Data & AI Governance & Oversight SVP (Boston, 2026-08-31), UOB Group VP AI & Data Assurance (Central Region, 2026-08-30), and Cognizant Principal AI Architect (Rockville MD, deadline 2026-08-27). All 4 route out of architect scope: three (Anthropic, State Street, UOB) sit at head-of-function scope routing to [`head-of-ai-governance`](https://github.com/ai-governance-curriculum/head-of-ai-governance-learning) level 60, and one (Cognizant) is infra-first architecture routing to [`ai-infra-senior-architect`](https://github.com/ai-infra-curriculum/ai-infra-senior-architect-learning) level 45.
+
+Rolling the window forward from 2026-05-08 → 2026-08-06 to 2026-06-08 → 2026-09-06 shifts three prior-cycle postings to window-adjacent status (post-15-nbc posted 2026-05-19, post-19-nomura estimated 2026-05, post-25-optum estimated 2026-05 and removed 2026-06-07). Refreshed in-window sample is **21 prior + 4 new = 25 architect-shaped postings** analyzed this cycle, exactly at the 25-minimum target. Two real market events landed inside the refresh window — **EU AI Act GPAI enforcement powers took effect on 2026-08-02** (already covered end-to-end by mod-104 / mod-105 / mod-110 / mod-113) and **agentic-AI-governance industry discourse intensified** (OWASP GenAI Security Project *State of Agentic AI Security and Governance 2.0*; CSA AI Controls Matrix v1 with 243 controls across 18 domains + MAESTRO threat model; IBM Agentic AI Governance Playbook; Gartner projection that 40% of enterprise apps embed task-specific agents by end-2026) — but neither shifted architect-scope job-posting frequency above the 0.30 threshold for any candidate theme. See [`.aicg/curriculum-plan-delta.json`](.aicg/curriculum-plan-delta.json) for the empty 2026-09 delta and per-candidate reasoning.
+
+Two candidate net-new themes flagged for re-evaluation next cycle:
+
+- **Agentic-AI-governance controls at architect scope** — strict architect-scope frequency remains 0.16 this cycle (below threshold); watch for architect-title convergence in Q4 2026 as GPAI enforcement drives control-library expansion. If verbatim architect-scope postings cross 0.30, propose an exercise addition to mod-102 (agentic-AI-specific control patterns: non-human identity, MCP / gateway governance, HITL-gate architecture, multi-agent orchestration control patterns) — **not** a new module.
+- **CSA AI Controls Matrix + MAESTRO threat-model integration** — currently discourse-only (0 verbatim postings). If architect-scope postings begin citing it verbatim, extend the mod-102 reference set (OWASP LLM Top 10 + MITRE ATLAS + Google SAIF + CISA/NCSC + CSA AI Controls Matrix + MAESTRO) rather than adding a new module.
+
+The complete 2026-08-06 live-pass narrative is retained below unchanged — the refresh pass does not invalidate it, only rolls the window forward and confirms continuity.
 
 ## Status — first live-pass complete (2026-08-06)
 
