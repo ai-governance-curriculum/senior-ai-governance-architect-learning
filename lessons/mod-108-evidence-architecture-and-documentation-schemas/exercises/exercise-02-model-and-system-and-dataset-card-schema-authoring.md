@@ -11,8 +11,8 @@ Chapter 03 fixes the stance: a card is a controlled, versioned, signed disclosur
 ## Prerequisites
 
 - Chapter [`03-the-card-family-model-system-dataset-and-risk-cards.md`](../03-the-card-family-model-system-dataset-and-risk-cards.md) read once, with the four card sections and the six invariants marked.
-- Chapter [`02-the-audit-log-as-a-substrate.md`](../02-the-audit-log-as-a-substrate.md) — every card publication produces a family-3 governance-workflow log event, and every substrate binding in a card is an ID into families 1 (training / evaluation runs), 2 (datasets), or 3 (governance workflow).
-- Chapter [`04-supply-chain-evidence-ml-bom-slsa-and-sigstore.md`](../04-supply-chain-evidence-ml-bom-slsa-and-sigstore.md) — the ML-BOM reference the model card emits binds here.
+- Chapter [`02-audit-log-architecture-retention-and-immutability.md`](../02-audit-log-architecture-retention-and-immutability.md) — every card publication produces a family-3 governance-workflow log event, and every substrate binding in a card is an ID into families 1 (training / evaluation runs), 2 (datasets), or 3 (governance workflow).
+- Chapter [`04-ai-supply-chain-evidence-cyclonedx-spdx-slsa-sigstore.md`](../04-ai-supply-chain-evidence-cyclonedx-spdx-slsa-sigstore.md) — the ML-BOM reference the model card emits binds here.
 - Exercise-01 substrate design available (cards live inside the substrate design's event and content stores).
 - The mod-106 risk register schema — the risk card cross-references risk-register entries by `RR-ID`; do not duplicate the register's fields into the risk card, cross-reference them.
 - The mod-105 chapter 05 Clause 7.5 documented-information discipline — cards are Clause-7.5 documented information; their control-of-documented-information practice must be legible.
