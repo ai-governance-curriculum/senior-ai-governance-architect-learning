@@ -10,7 +10,7 @@ This chapter fills in the chapter-01 sector-adaptation record (see `01-the-secto
 
 ## SR 11-7 as the composition anchor
 
-**Federal Reserve Supervisory Letter SR 11-7 — "Guidance on Model Risk Management"** was issued on 4 April 2011 jointly with **OCC Bulletin 2011-12** carrying the same title and substantive text. A G-SIB with a national bank charter falls under both; the joint text means one MRM framework satisfies both supervisors. <!-- needs-research: verify FDIC-issued MRM guidance for insured state non-member banks; some G-SIB entity structures include FDIC-supervised subsidiaries. -->
+**Federal Reserve Supervisory Letter SR 11-7 — "Guidance on Model Risk Management"** was issued on 4 April 2011 jointly with **OCC Bulletin 2011-12** carrying the same title and substantive text. A G-SIB with a national bank charter falls under both; the joint text means one MRM framework satisfies both supervisors. The FDIC adopted the same interagency text for insured state non-member banks and state savings associations through **FIL-22-2017** ("Adoption of Supervisory Guidance on Model Risk Management," 7 June 2017), so a G-SIB entity structure with FDIC-supervised subsidiaries inherits substantively the same framework.
 
 The SR 11-7 framework names three elements. Every AI governance decision the architect makes at a G-SIB should be checkable against these three:
 
@@ -58,7 +58,7 @@ The unified inventory carries, at minimum, the following attribute families:
 
 ## SR 23-4 and third-party model risk
 
-**SR 23-4 / OCC Bulletin 2023-17 / FDIC FIL-29-2023 — "Interagency Guidance on Third-Party Relationships: Risk Management,"** issued 6 June 2023 by the Federal Reserve, OCC, and FDIC jointly. Superseded the individual agencies' prior third-party guidance (Fed's SR 13-19, OCC's Bulletin 2013-29 for large banks, FDIC's FIL-44-2008). <!-- needs-research: verify the exact SR and bulletin numbers and issuance date; the June 2023 interagency guidance is definitively the current instrument but the SR number should be pinned. -->
+**SR 23-4 / OCC Bulletin 2023-17 / FDIC FIL-29-2023 — "Interagency Guidance on Third-Party Relationships: Risk Management,"** issued 6 June 2023 by the Federal Reserve, OCC, and FDIC jointly and published in the Federal Register on 9 June 2023 (88 FR 37920). Superseded the individual agencies' prior third-party guidance (Fed's SR 13-19, OCC's Bulletin 2013-29 for large banks, FDIC's FIL-44-2008).
 
 The guidance covers the full third-party lifecycle — planning, due diligence and selection, contract negotiation, ongoing monitoring, and termination — with board-level oversight where materiality warrants.
 
@@ -74,7 +74,7 @@ Material third-party relationships in a G-SIB are typically minuted at the board
 
 ## OSFI Guideline E-23 for Canadian FI subsidiaries
 
-G-SIBs typically operate Canadian FI subsidiaries (federally regulated by OSFI). **OSFI Guideline E-23 — "Enterprise-Wide Model Risk Management for Deposit-Taking Institutions"** was originally issued in 2017 and revised in 2024 to broaden the scope and update the framework. <!-- needs-research: verify the current version and effective date of OSFI E-23; the 2024 revision expanded scope beyond DTIs to insurers and to AI/ML systems explicitly. Confirm the exact title and revision date. -->
+G-SIBs typically operate Canadian FI subsidiaries (federally regulated by OSFI). **OSFI Guideline E-23 — "Model Risk Management"** was originally issued in 2017 and the current revised version was finalised in September 2025 with an effective date of 1 May 2027, broadening scope to all federally regulated financial institutions (including insurers and foreign bank/insurance branches), expanding applicability to all models regardless of source or purpose, and explicitly addressing AI/ML systems.
 
 E-23 differs from SR 11-7 in four architecturally material ways:
 
@@ -87,7 +87,7 @@ E-23 differs from SR 11-7 in four architecturally material ways:
 
 ## Colorado AI Act SB 24-205 — consumer-lending overlay
 
-**Colorado Consumer Protections for Artificial Intelligence Act (SB 24-205)**, signed 17 May 2024, effective 1 February 2026. Regulates deployers and developers of *high-risk AI systems* that make or are a substantial factor in making *consequential decisions* affecting Colorado consumers. Consequential-decision domains explicitly include financial or lending services. <!-- needs-research: verify the effective date has not been amended by subsequent Colorado legislative session; the CO legislature has considered amendments to SB 24-205. -->
+**Colorado Consumer Protections for Artificial Intelligence Act (SB 24-205)**, signed 17 May 2024, originally effective 1 February 2026 but postponed by SB 25B-004 (signed 28 August 2025) to 30 June 2026 and subsequently repealed and replaced by **Colorado SB 26-189** (signed 14 May 2026, effective 1 January 2027) before the original statute took effect. Both the original and replacement statutes regulate deployers and developers of *high-risk AI systems* that make or are a substantial factor in making *consequential decisions* affecting Colorado consumers, with consequential-decision domains that explicitly include financial or lending services.
 
 **Applicability to a G-SIB.** The act attaches when the bank is a deployer of a high-risk AI system that is a substantial factor in a consequential decision affecting a Colorado consumer. Consumer-lending decisions — credit-card underwriting, personal-loan underwriting, mortgage underwriting, credit-line adjustments — are within scope where AI is materially involved in the decision. Business-lending decisions with individual guarantors may also be in scope depending on how the consumer definition applies.
 
@@ -97,7 +97,7 @@ E-23 differs from SR 11-7 in four architecturally material ways:
 
 ## EU AI Act Annex III paragraph 5(b) — creditworthiness
 
-For G-SIB EU operations (EMEA subsidiaries; EU customers of US-domiciled products in ways that put the bank within EU AI Act territorial scope), **EU AI Act Annex III paragraph 5(b)** classifies AI systems intended to be used for evaluating the creditworthiness of natural persons or for establishing their credit score as *high-risk*, with the exception (as of the final adopted text) of AI systems used for the purpose of detecting financial fraud. <!-- needs-research: verify the exact Annex III paragraph number and the fraud-detection carve-out language against the final adopted text of Regulation (EU) 2024/1689. -->
+For G-SIB EU operations (EMEA subsidiaries; EU customers of US-domiciled products in ways that put the bank within EU AI Act territorial scope), **Regulation (EU) 2024/1689 Annex III point 5(b)** classifies AI systems intended to be used for evaluating the creditworthiness of natural persons or for establishing their credit score as *high-risk*, with the carve-out — in the Annex III point 5(b) text itself — for AI systems used for the purpose of detecting financial fraud. (Hybrid systems that combine fraud detection with creditworthiness evaluation remain in scope.)
 
 **Applicability.** Consumer-credit scoring, personal-loan and mortgage underwriting, and credit-limit-adjustment AI where the customer is a natural person and the bank is within EU AI Act scope trigger Annex III. Chapter III Section 2 obligations then attach: risk-management system (Article 9), data governance (Article 10), technical documentation (Article 11), record-keeping / logging (Article 12), transparency to deployers (Article 13), human oversight (Article 14), accuracy / robustness / cybersecurity (Article 15), plus post-market monitoring (Article 72), incident reporting (Article 73), and conformity assessment.
 

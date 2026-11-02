@@ -37,15 +37,13 @@ naic_bulletin_to_control_family_map:
 
 The applicability filter on every control activated by the bulletin carries an `addressee_scope` field listing the *adopting states* — see the per-state activation section. Non-adopting-state operation does not activate the bulletin-derived obligations, though it may activate the state's underlying unfair-trade-practices statute directly.
 
-<!-- needs-research: the number of states that have adopted the NAIC AI Model Bulletin (verbatim, with amendments, or via a bulletin of their own tracking the model closely) as of the current date; NAIC maintains an adoption tracker but the count evolves quarterly and should be verified against the tracker. -->
+As of the NAIC adoption map dated 31 August 2026, 25 states and the District of Columbia had adopted the NAIC AI Model Bulletin (verbatim or with amendments). California, Colorado, New York, and Texas operate under separate insurance-specific AI frameworks rather than the NAIC bulletin; the enterprise applicability filter is populated from the NAIC adoption tracker as it refreshes.
 
 ## Unfair-discrimination testing as a required control family
 
 The bulletin's governance and testing sections point at unfair-discrimination testing without specifying methodology; state insurance codes' prohibitions on unfair discrimination in rating and underwriting are the substantive obligations. The bulletin's contribution is to make the testing a *programme requirement* — the carrier must have a testing methodology, must apply it, and must retain the results — as a matter of the AI programme itself, not only of rate-filing defence.
 
-**Colorado Insurance Regulation 10-1-1** operationalises Colorado SB 21-169 (the "Insurers' Use of External Consumer Data and Information Sources, Algorithms, and Predictive Models" statute enacted in 2021). It applies to Colorado-licensed life insurers using ECDIS, algorithms, or predictive models in life-insurance underwriting; the DOI has signalled intent to extend the framework to other lines through subsequent rulemakings.
-
-<!-- needs-research: verify the current scope of Colorado Regulation 10-1-1 (life-only or extended) and the status of related rulemakings for auto, homeowners, and health; the Colorado DOI's rulemaking calendar is authoritative. -->
+**Colorado Insurance Regulation 10-1-1** operationalises Colorado SB 21-169 (the "Insurers' Use of External Consumer Data and Information Sources, Algorithms, and Predictive Models" statute enacted in 2021). The amended regulation (adopted in 2025, with the first annual compliance reports due 1 July 2026) extends the Governance and Risk Management Framework requirements beyond life insurers to **private passenger automobile insurers** and **health benefit plan insurers** that use ECDIS, algorithms, and predictive models that use ECDIS; the Colorado DOI's rulemaking calendar is authoritative on scope and additional-lines sequencing.
 
 Regulation 10-1-1 requires subject insurers to file *Governance and Risk Management Framework* reports and, distinctively, *Testing Methodology* reports with the Colorado DOI. The Testing Methodology filing is the quantitative substance: the insurer describes the methodology it uses to test ECDIS-and-algorithm use for unfair discrimination against protected classes, and the DOI retains authority to examine, comment on, and demand revision. The regulation names disparate-impact analysis, drivers analysis, and remediation approaches, and expects the insurer to specify the statistical methods, thresholds, and reference populations it uses.
 
@@ -87,9 +85,7 @@ Failure mode: the mod-109 programme treats the AI-underwriting vendor as a stand
 
 ## EU AI Act Annex III applicability for life and health insurance
 
-For the carrier with EU operations — an EU subsidiary, a reinsurance branch, or cross-border exposure meeting the Act's territorial scope — the EU AI Act's Annex III classification of AI systems used in *life and health insurance* risk assessment and pricing as *high-risk* activates a distinct obligation set. Annex III's insurance paragraph is narrower than a naive reading suggests: it covers *life and health* insurance in the *risk assessment and pricing of natural persons*, and does not sweep in property-and-casualty rating or non-natural-person cover.
-
-<!-- needs-research: verify the specific paragraph number in Annex III on life and health insurance in the enacted consolidated text and any subsequent delegated-act adjustments; the scope language is enacted but the paragraph number requires verification. -->
+For the carrier with EU operations — an EU subsidiary, a reinsurance branch, or cross-border exposure meeting the Act's territorial scope — the EU AI Act's Annex III classification of AI systems used in *life and health insurance* risk assessment and pricing as *high-risk* activates a distinct obligation set. **Annex III point 5(c)** of Regulation (EU) 2024/1689 is the operative paragraph; it covers AI systems "intended to be used for risk assessment and pricing in relation to natural persons in the case of life and health insurance", and does not sweep in property-and-casualty rating or non-natural-person cover. The Commission's draft guidelines read "life and health insurance" to include private long-term care insurance and personal pension products with significant livelihood impact.
 
 The applicability transforms the enterprise obligation set for the covered systems:
 
