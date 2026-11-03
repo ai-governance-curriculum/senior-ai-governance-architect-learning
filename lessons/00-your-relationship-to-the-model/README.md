@@ -45,7 +45,7 @@ Each row is a sibling org: what you hand them, what they hand you, and the role 
 
 ## Your ladder
 
-- **Before this role:** [Agentic Safety & Red-Team Engineer](https://github.com/ai-governance-curriculum/agentic-safety-engineer-learning)
+- **Before this role:** [AI Auditor](https://github.com/ai-governance-curriculum/ai-auditor-learning)
 - **After this role:** [Head of AI Governance](https://github.com/ai-governance-curriculum/head-of-ai-governance-learning)
 
 ## Scenario: One model upgrade, five orgs
