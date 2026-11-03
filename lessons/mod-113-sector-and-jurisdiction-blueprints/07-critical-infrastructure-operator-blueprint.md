@@ -10,7 +10,7 @@ The failure mode the chapter designs against is the one where the AI programme i
 
 ## The CISA / NCSC Guidelines for Secure AI System Development
 
-The **Guidelines for Secure AI System Development** were published on 26 November 2023 <!-- needs-research: verify exact publication date --> by the UK's National Cyber Security Centre (NCSC) with the US Cybersecurity and Infrastructure Security Agency (CISA) as co-seal and a group of international partner agencies as co-signatories. The guidelines are non-binding but read by CISA and NCSC as the reference articulation of secure-by-design practice for AI system development and are increasingly cited in sector-regulator communications as the expected shape.
+The **Guidelines for Secure AI System Development** were published on 26 November 2023 by the UK's National Cyber Security Centre (NCSC) with the US Cybersecurity and Infrastructure Security Agency (CISA) as co-seal and a group of international partner agencies as co-signatories. The guidelines are non-binding but read by CISA and NCSC as the reference articulation of secure-by-design practice for AI system development and are increasingly cited in sector-regulator communications as the expected shape.
 
 The guidelines organise recommendations across four life-cycle stages. Each stage is a composition point for the mod-102 control library and the mod-108 evidence architecture.
 
@@ -23,7 +23,7 @@ The composition move the sector-adaptation record makes explicit is that CISA/NC
 
 ## The ENISA Multilayer Framework for Good Cybersecurity Practices for AI
 
-The **Multilayer Framework for Good Cybersecurity Practices for AI** was published by ENISA <!-- needs-research: verify exact publication date; ENISA published a multilayer framework on cybersecurity for AI in the 2023 timeframe with subsequent updates --> as a layered reference for cybersecurity practices applicable to AI systems, structured as three composed layers:
+The **Multilayer Framework for Good Cybersecurity Practices for AI** (FAICP) was published by ENISA in June 2023 as a layered reference for cybersecurity practices applicable to AI systems, structured as three composed layers:
 
 - **Layer 1 — cybersecurity foundations.** The general information-security controls that any AI system inherits by virtue of being an information system — access control, cryptography, logging, vulnerability management. These are already carried by the enterprise ISMS (typically ISO/IEC 27001-anchored) and by mod-102 catalog entries the AIMS references through the mod-105 ISMS-AIMS interface (see mod-105 chapter 04).
 - **Layer 2 — AI-specific practices.** The controls that are only well-formed when the asset is an AI system — training-data governance, model evaluation for robustness under adversarial conditions, monitoring for behaviour drift, model provenance and integrity. These map onto the mod-102 AI-specific control families with ENISA's line items registered as evidence-contract extensions on the relevant controls.
@@ -46,13 +46,13 @@ CSF 2.0 organises outcomes across six functions:
 - **Respond (RS)** — response planning, communications, analysis, mitigation, improvements. The AI-incident pipeline (mod-110) is the enterprise incident-response pipeline with AI-specific attributes; it does not run parallel to the enterprise Respond capability.
 - **Recover (RC)** — recovery planning, improvements, communications. Continuity-of-service planning for AI-in-OT is a Recover outcome and interacts with the sector-regulator's specific continuity obligations (e.g., NERC CIP-008/CIP-009).
 
-CSF 2.0 continues to support **profiles** as the mechanism for tailoring the framework to a specific implementation. Sector-specific NIST CSF profiles exist for a number of sectors and sub-sectors <!-- needs-research: verify current published sector-CSF-profile inventory (e.g., manufacturing, EV/XFC, communications, hybrid satellite networks) --> and are read by the operator's programme as the sector-tuned articulation of CSF outcomes. Where a sector CSF profile exists, the operator's control library carries the profile's outcomes as the reference shape for that sector; where none exists, the operator authors a profile against the enterprise reference and the sector regulator's expectations.
+CSF 2.0 continues to support **profiles** as the mechanism for tailoring the framework to a specific implementation. Sector-specific NIST CSF profiles exist for a number of sectors and sub-sectors — including the Manufacturing Profile (NIST IR 8183), the Semiconductor Manufacturing Community Profile (NIST IR 8546, draft), the EV/XFC Extreme Fast Charging profile (with the Department of Energy), the Satellite Ground profile (NIST IR 8401), the Hybrid Satellite Networks profile (NIST IR 8441), and the FCC CSRIC Communications Sector profile among others — and are read by the operator's programme as the sector-tuned articulation of CSF outcomes. Where a sector CSF profile exists, the operator's control library carries the profile's outcomes as the reference shape for that sector; where none exists, the operator authors a profile against the enterprise reference and the sector regulator's expectations.
 
 The composition move is that CSF 2.0 is the outer scaffold the AIMS composes into; the mod-102 catalog carries CSF-2.0-function edges on every control (Govern, Identify, Protect, Detect, Respond, Recover) so that the operator can render a CSF-profile view of the catalog on demand for the sector regulator's inspection.
 
 ## NIST SP 800-82 Rev. 3 — Guide to Operational Technology (OT) Security
 
-**NIST SP 800-82 Rev. 3, "Guide to Operational Technology (OT) Security,"** was issued in 2023 <!-- needs-research: verify Rev. 3 exact publication date --> as a substantial revision of the guide, broadening from industrial control systems to operational technology more generally and updating the security guidance for modern OT environments. SP 800-82 Rev. 3 references NIST CSF and NIST SP 800-53 as the underlying control catalog and provides OT-specific tailoring guidance.
+**NIST SP 800-82 Rev. 3, "Guide to Operational Technology (OT) Security,"** was issued on 28 September 2023 as a substantial revision of the guide, broadening from industrial control systems to operational technology more generally and updating the security guidance for modern OT environments. SP 800-82 Rev. 3 references NIST CSF and NIST SP 800-53 as the underlying control catalog and provides OT-specific tailoring guidance.
 
 The document is architecturally load-bearing for the AI-in-OT decision surface because it fixes the OT-specific constraints that shape what AI is allowed to do inside the control-system boundary:
 
@@ -69,7 +69,7 @@ The horizontal frame (CISA/NCSC, ENISA, CSF 2.0, SP 800-82) is not the enforceab
 
 ### NERC CIP for the North American bulk electric system
 
-The **North American Electric Reliability Corporation Critical Infrastructure Protection (NERC CIP)** standards apply to registered entities operating bulk-electric-system facilities in North America (US, Canada, portions of Mexico). The active CIP standard set covers, at minimum, CIP-002 through CIP-014, <!-- needs-research: verify current active standard set; NERC has adopted or is progressing additional standards including CIP-015 addressing internal network security monitoring, and revisions to individual standards are ongoing --> covering critical-cyber-asset identification and categorisation (CIP-002), security-management controls (CIP-003), personnel and training (CIP-004), electronic security perimeters (CIP-005), physical security of BES cyber systems (CIP-006), systems security management (CIP-007), incident reporting and response planning (CIP-008), recovery plans (CIP-009), configuration change management and vulnerability assessments (CIP-010), information protection (CIP-011), supply-chain risk management (CIP-013), and physical security of critical transmission stations and substations (CIP-014).
+The **North American Electric Reliability Corporation Critical Infrastructure Protection (NERC CIP)** standards apply to registered entities operating bulk-electric-system facilities in North America (US, Canada, portions of Mexico). The active CIP standard set covers CIP-002 through CIP-014 — critical-cyber-asset identification and categorisation (CIP-002), security-management controls (CIP-003), personnel and training (CIP-004), electronic security perimeters (CIP-005), physical security of BES cyber systems (CIP-006), systems security management (CIP-007), incident reporting and response planning (CIP-008), recovery plans (CIP-009), configuration change management and vulnerability assessments (CIP-010), information protection (CIP-011), supply-chain risk management (CIP-013), and physical security of critical transmission stations and substations (CIP-014) — together with CIP-015 (Internal Network Security Monitoring, CIP-015-1 approved by FERC on 26 June 2025 and effective 2 September 2025, with CIP-015-2 subsequently extending INSM to EACMS and PACS outside the ESP). Individual standards are periodically revised through NERC's standards-development process; the active revision list should be reconfirmed per engagement.
 
 The CIP framework is enforced through NERC's compliance monitoring and enforcement program with regional entities (WECC, RF, MRO, NPCC, SERC, Texas RE) conducting audits. Non-compliance carries financial penalties assessed against a violation severity level and violation risk factor matrix.
 
@@ -83,7 +83,7 @@ For an AI system inside the operator's BES cyber-system boundary, CIP compositio
 
 ### TSA Security Directives for pipelines and rail
 
-The **Transportation Security Administration** exercises cybersecurity authority over surface transportation modes including pipelines and rail. TSA has issued a series of **Security Directives** — the pipeline SDs originally issued in 2021 following the Colonial Pipeline incident and iteratively re-issued and revised, and the freight-rail and passenger-rail SDs issued subsequently. <!-- needs-research: verify current TSA SD numbers, revision dates, and scope; the SDs are re-issued periodically and are typically designated by SD-Pipeline-2021-01, SD-Pipeline-2021-02, SD-Pipeline-2021-02C series, SD-Surface-Transportation, and successor designations --> The SDs require covered entities to implement a cybersecurity implementation plan, conduct annual cybersecurity assessments, report cybersecurity incidents to CISA within defined timelines, and designate a cybersecurity coordinator available at all times.
+The **Transportation Security Administration** exercises cybersecurity authority over surface transportation modes including pipelines and rail. TSA has issued a series of **Security Directives** — the pipeline SDs originally issued in 2021 following the Colonial Pipeline incident and iteratively re-issued and revised (the SD-Pipeline-2021-01 and SD-Pipeline-2021-02 series, with Pipeline-2021-02D effective 27 July 2023 and Pipeline-2021-02E subsequently issued and ratified in early 2025), and the freight-rail and passenger-rail SDs issued subsequently. The SDs are re-issued periodically and current revision letters should be reconfirmed per engagement against TSA's published directives. The SDs require covered entities to implement a cybersecurity implementation plan, conduct annual cybersecurity assessments, report cybersecurity incidents to CISA within defined timelines, and designate a cybersecurity coordinator available at all times.
 
 For an AI system used by a covered pipeline or rail entity, TSA SD composition means:
 
@@ -93,12 +93,12 @@ For an AI system used by a covered pipeline or rail entity, TSA SD composition m
 
 ### EU NIS2 Directive
 
-The **NIS2 Directive** (Directive (EU) 2022/2555) supersedes the original NIS Directive and expands scope significantly across essential and important entities in a broad set of sectors. The transposition deadline for member states was 17 October 2024, and member-state transposition laws have been enacted at varying pace since. <!-- needs-research: verify current transposition status across member states; transposition has been uneven and some member states have missed the October 2024 deadline -->
+The **NIS2 Directive** (Directive (EU) 2022/2555) supersedes the original NIS Directive and expands scope significantly across essential and important entities in a broad set of sectors. The transposition deadline for member states was 17 October 2024; only a small minority of member states met it, the European Commission opened infringement procedures against 23 Member States on 28 November 2024, issued reasoned opinions to 19 Member States on 7 May 2025, and in July 2026 referred Ireland, Spain, France, and the Netherlands to the Court of Justice. By late 2026 most member states had adopted a national transposing law, but the enforcement posture remains uneven and the current national-law list should be reconfirmed per engagement.
 
 Two articles are architecturally load-bearing for the operator's AI programme:
 
 - **Article 21 — cybersecurity risk-management measures.** Enumerates the minimum measures essential and important entities must adopt, spanning risk analysis, incident handling, business continuity and crisis management, supply-chain security, security in network and information systems acquisition/development/maintenance, effectiveness assessment, cryptography, human-resources security, access-control policies and asset management, multi-factor authentication and secure communications. Where the entity operates AI in scope of NIS2, the Article 21 measures compose with the ENISA multilayer framework as the reference practice shape.
-- **Article 23 — incident reporting.** Requires essential and important entities to notify the competent authority or the CSIRT of *significant* incidents without undue delay and in any event within specific windows: an *early warning* within 24 hours of becoming aware of a significant incident (indicating whether unlawful or malicious acts are suspected), an *incident notification* within 72 hours with an initial assessment, and a *final report* within one month (or, if the incident is ongoing, a progress report at one month and a final report within one month of handling closure). <!-- needs-research: verify exact Article 23 reporting-window language against the adopted directive text --> The AI-incident pipeline routes NIS2-reportable incidents through the Article 23 path with the sector-regulator liaison role driving the notification cadence and the incident commander with AI scope holding the operational role.
+- **Article 23 — incident reporting.** Requires essential and important entities to notify the competent authority or the CSIRT of *significant* incidents without undue delay and in any event within specific windows: an *early warning* within 24 hours of becoming aware of a significant incident (indicating whether unlawful or malicious acts are suspected), an *incident notification* within 72 hours with an initial assessment, and a *final report* within one month (or, if the incident is ongoing, a progress report at one month and a final report within one month of handling closure). The AI-incident pipeline routes NIS2-reportable incidents through the Article 23 path with the sector-regulator liaison role driving the notification cadence and the incident commander with AI scope holding the operational role.
 
 ### ISACs — intelligence-sharing partners, not regulators
 
@@ -179,8 +179,10 @@ sector_adaptation_record:
         publisher: European Union
         instrument_type: regulation
         obligation_register_ids: [ OBL-EU-AI-ACT-ANNEX-III-CI-01 ]
-        # <!-- needs-research: verify exact Annex III item text and item number
-        #      for critical-infrastructure use cases in the final adopted text -->
+        # Annex III, point 2 of Regulation (EU) 2024/1689 covers AI systems
+        # intended as safety components in the management and operation of
+        # critical digital infrastructure, road traffic, or the supply of
+        # water, gas, heating or electricity.
     sector_specific:
       - identifier: NERC-CIP-002-through-014
         title: NERC Critical Infrastructure Protection Standards
@@ -199,7 +201,10 @@ sector_adaptation_record:
         instrument_type: security-directive
         applies_when: entity is a TSA-covered pipeline or rail operator
         obligation_register_ids: [ OBL-TSA-SD-PIPELINE-01, OBL-TSA-SD-RAIL-01 ]
-        # <!-- needs-research: pin current SD numbers and revision letters -->
+        # the active pipeline SD at writing was SD-Pipeline-2021-02E (ratified
+        # early 2025, succeeding -02D effective 27 July 2023); SDs are re-issued
+        # periodically and the current revision letter must be re-pinned at each
+        # obligation-register refresh.
       - identifier: NIS2-Directive
         title: Directive (EU) 2022/2555 on measures for a high common level of
           cybersecurity across the Union

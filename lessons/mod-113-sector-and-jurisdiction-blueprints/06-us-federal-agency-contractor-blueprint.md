@@ -54,7 +54,7 @@ FedRAMP operates on three baselines (Low, Moderate, and High), keyed to the FIPS
 
 **Continuous monitoring** is FedRAMP's ongoing discipline. The authorised system submits monthly vulnerability scan results, monthly POA&M updates, annual reassessment, and event-triggered reporting on significant changes. The contractor's mod-110 post-market surveillance function composes with the FedRAMP continuous monitoring stream — one PMS pipeline, extended attributes to satisfy FedRAMP CONMON, rather than two parallel surveillance regimes.
 
-**FedRAMP 20x** is the current modernisation programme intended to accelerate authorisations and reduce the administrative burden. <!-- needs-research: verify the current shape and scope of FedRAMP 20x — the programme has evolved substantially and any specific claim about its provisions should be checked against current GSA / FedRAMP PMO publications. --> The architect's near-term posture is to author the evidence architecture to the current FedRAMP baseline and instrument it so that the 20x programme's shifts — greater automation, machine-readable SSPs, continuous authorisation — can be adopted without a re-architecture.
+**FedRAMP 20x** is the current modernisation programme — announced by GSA on 24 March 2025 and rolling out in phases, with a Phase One Low pilot opened in May 2025 and a Phase Two Moderate pilot that began in late 2025 — intended to accelerate authorisations through machine-readable (OSCAL-based) documentation and automated validation. (See fedramp.gov/20x for the current phase and pilot participant list; specific provisions continue to evolve.) The architect's near-term posture is to author the evidence architecture to the current FedRAMP baseline and instrument it so that the 20x programme's shifts — greater automation, machine-readable SSPs, continuous authorisation — can be adopted without a re-architecture.
 
 ## NIST SP 800-53 Rev. 5 — the underlying control catalog
 
@@ -64,13 +64,13 @@ The composition shape is that the mod-102 catalog entries which touch a FedRAMP-
 
 The architectural principle is that the mod-102 entry is the *AI-nexus enrichment* on top of the SP 800-53 control — the AI-specific attributes, evidence-contract line items, and applicability filters — and the SP 800-53 control is the *security-and-privacy substrate* the enrichment presumes. The FedRAMP SSP renders the SP 800-53 implementation; the mod-108 evidence for the mod-102 entry renders the AI-specific extension. Both point to the same underlying implementation from opposite ends of the catalog.
 
-**NIST AI RMF and NIST AI 600-1 as the AI-specific overlay.** SP 800-53 does not cover the AI-specific risks that the mod-106 taxonomy names — evaluation, safety, fairness, and third-party foundation-model behaviour — with the fidelity a level-50 architect needs. **NIST AI Risk Management Framework (AI RMF 1.0)** and **NIST AI 600-1 — "AI RMF Generative AI Profile"** are the AI-specific overlay the contractor's programme composes onto the SP 800-53 substrate. <!-- needs-research: verify the current publication status of AI 600-1 and any successor generative-AI profile; NIST's generative-AI publications have evolved. --> The RMF's GOVERN / MAP / MEASURE / MANAGE functions map onto the mod-105 AIMS Clause structure and the mod-107 assurance architecture directly; the 600-1 profile's generative-AI-specific practices map onto the mod-102 catalog entries covering foundation-model use, prompt-injection defence, and content-provenance handling.
+**NIST AI RMF and NIST AI 600-1 as the AI-specific overlay.** SP 800-53 does not cover the AI-specific risks that the mod-106 taxonomy names — evaluation, safety, fairness, and third-party foundation-model behaviour — with the fidelity a level-50 architect needs. **NIST AI Risk Management Framework (AI RMF 1.0)** (January 2023) and **NIST AI 600-1 — "AI RMF Generative AI Profile"** (published 26 July 2024) are the AI-specific overlay the contractor's programme composes onto the SP 800-53 substrate. The RMF's GOVERN / MAP / MEASURE / MANAGE functions map onto the mod-105 AIMS Clause structure and the mod-107 assurance architecture directly; the 600-1 profile's generative-AI-specific practices map onto the mod-102 catalog entries covering foundation-model use, prompt-injection defence, and content-provenance handling.
 
 The architect authors the mod-102 catalog so that a FedRAMP-in-scope AI system has one implementation per control that satisfies SP 800-53 (rendered in the SSP), NIST AI RMF (rendered in the AI RMF profile the programme maintains), and the enterprise's mod-102 catalog (rendered in the SoA). Three renderings of one implementation is the correct posture; three implementations of one control is the two-programme failure mode.
 
 ## US AI Safety Institute methodology
 
-The **US AI Safety Institute (US AISI)**, housed within NIST, publishes evaluation methodology and (via voluntary agreements) collaborates with frontier-AI-model developers on pre-deployment evaluation. <!-- needs-research: verify the current organisational status of US AISI and the current state of the voluntary agreements framework; the institute's mandate and specific publications have evolved. --> A contractor whose product embeds a frontier model — a large language model, image-generation model, or multimodal foundation model — indirectly inherits evaluation-disclosure obligations that the voluntary agreements the frontier lab has entered impose. The evaluation results the lab produces under an AISI voluntary agreement are typically provider-facing artefacts; the contractor's mod-109 provider onboarding pack should require attestation that the provider participates in the applicable evaluation regime and that the provider will disclose material findings that affect the contractor's deployment.
+The **US AI Safety Institute (US AISI)** — renamed the **Center for AI Standards and Innovation (CAISI)** on 6 June 2025 as the Department of Commerce reoriented the body toward national-security-relevant testing, voluntary industry standards, and competitiveness while retaining its housing within NIST — publishes evaluation methodology and, via voluntary memoranda of understanding with frontier-AI developers (notably the pre-deployment-access MOUs signed with OpenAI and Anthropic on 29 August 2024), collaborates on model evaluation. A contractor whose product embeds a frontier model — a large language model, image-generation model, or multimodal foundation model — indirectly inherits evaluation-disclosure obligations that the voluntary agreements the frontier lab has entered impose. The evaluation results the lab produces under an AISI voluntary agreement are typically provider-facing artefacts; the contractor's mod-109 provider onboarding pack should require attestation that the provider participates in the applicable evaluation regime and that the provider will disclose material findings that affect the contractor's deployment.
 
 The architectural move is that the US AISI methodology composes into the mod-107 pre-deployment gate as a *provider-side evaluation input*, not a contractor-side evaluation the contractor itself performs. The contractor's own evaluation is contractor-scope (behaviour of the composed system in the contractor's deployment); the AISI-adjacent evaluation is provider-scope (behaviour of the underlying model as the provider evaluates it). The mod-108 evidence architecture records both with distinct provenance edges so the contractor's programme can answer, at any point, *what does the underlying model's provider-side evaluation say about this risk?* and *what does our contractor-side evaluation say about the composed system's exposure to this risk?* Two questions, two artefacts, one integrated evidence record.
 
@@ -131,14 +131,14 @@ sector_adaptation_record:
         supervisor: OMB (Office of Management and Budget)
         instrument_type: OMB-memorandum
         obligation_register_ids: [ OBL-USFED-M-25-21-... ]
-        # supersedes: omb-m-24-10 <!-- needs-research: verify -->
+        # supersedes: omb-m-24-10 (M-25-21 rescinds and replaces M-24-10 per EO 14179 — 3 April 2025)
       - id: omb-m-25-22
         title: Driving Efficient Acquisition of Artificial Intelligence in Government
         jurisdiction: US-federal
         supervisor: OMB
         instrument_type: OMB-memorandum
         obligation_register_ids: [ OBL-USFED-M-25-22-... ]
-        # supersedes: omb-m-24-18 <!-- needs-research: verify -->
+        # supersedes: omb-m-24-18 (M-25-22 rescinds and replaces M-24-18 per EO 14179 — 3 April 2025)
       - id: fedramp
         title: Federal Risk and Authorization Management Program
         jurisdiction: US-federal
@@ -175,7 +175,9 @@ sector_adaptation_record:
         supervisor: NIST / US AISI
         instrument_type: methodology + voluntary-agreements
         obligation_register_ids: [ OBL-USFED-AISI-... ]
-        # <!-- needs-research: verify current AISI publications and voluntary-agreement shape. -->
+        # the US AISI was renamed the Center for AI Standards and Innovation
+        # (CAISI) on 6 June 2025; the pre-deployment MOUs with OpenAI and
+        # Anthropic (29 August 2024) remain the archetypal voluntary agreements
 
   profile:
     id: PROFILE-US-FED-CONTRACTOR-v1.0
@@ -221,8 +223,11 @@ sector_adaptation_record:
           not governed by FedRAMP but by the corresponding IC / DoD
           authorisation regime); the filter must carry the classification
           so the correct authorisation path is engaged.
-        # <!-- needs-research: verify the IC / DoD authorisation regime nomenclature
-        # and how it interacts with FedRAMP High for national-security systems. -->
+        # DoD cloud workloads are governed by the DoD Cloud Computing SRG
+        # Impact Levels (IL2/IL4/IL5 for unclassified-through-NSS; IL6 for
+        # Secret-classified) issued under DISA Provisional Authorization;
+        # IL5/IL6 use FedRAMP High as a floor plus FedRAMP+ overlays and
+        # are separate authorisations from the FedRAMP High ATO itself.
 
   evidence_contract_extensions:
     - control_id: AIC-<security-controls-implementation>
@@ -343,11 +348,10 @@ sector_adaptation_record:
       classified-scope deployments above the Secret level are excluded from
       the ISO/IEC 42001 AIMS certification scope and governed under the
       corresponding IC / DoD framework; the exclusion is documented with
-      the rationale that ISO/IEC 42001 certification bodies do not have
-      the classification authority to audit those systems.
-      <!-- needs-research: verify current guidance on ISO/IEC 42001 auditor
-      classification handling; some certification bodies operate cleared
-      auditors under specific arrangements. -->
+      the rationale that an ordinary ISO/IEC 42001 certification body does
+      not have the classification authority to audit those systems; where a
+      certification body operates cleared-auditor arrangements under a
+      specific accommodation, the exclusion can be revisited at scope ratification.
     interfaces:
       to_enterprise_scope: |
         the federal-programme addendum is an additive inclusion — federal
@@ -455,7 +459,7 @@ sector_adaptation_record:
   deprecation_path_notes:
     - regulation_id: omb-m-24-10
       superseded_by: omb-m-25-21
-      migration_deadline: <!-- needs-research: verify -->
+      migration_deadline: M-25-21 rescinded and replaced M-24-10 on issuance (3 April 2025); transition windows for specific requirements are set out in M-25-21 itself
       evidence_valid_until: |
         evidence produced under M-24-10 remains valid through the transition
         window OMB defines; the mod-104 register carries the transition
@@ -466,7 +470,7 @@ sector_adaptation_record:
         those obligation-register edges rather than restating them.
     - regulation_id: omb-m-24-18
       superseded_by: omb-m-25-22
-      migration_deadline: <!-- needs-research: verify -->
+      migration_deadline: M-25-22 rescinded and replaced M-24-18 on issuance (3 April 2025); the contract-clause requirements attach to solicitations issued on or after 30 September 2025 and to renewal/extension options exercised on or after 1 October 2025
       evidence_valid_until: as above per mod-104 transition edges
       handoff_notes: as above
 ```
