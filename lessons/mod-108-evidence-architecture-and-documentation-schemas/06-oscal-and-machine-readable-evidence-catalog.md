@@ -17,7 +17,7 @@ The default candidate is NIST OSCAL. The chapter explains what OSCAL is, why it 
 
 ## What OSCAL is, structurally
 
-OSCAL — the Open Security Controls Assessment Language — is a NIST-authored suite of XML / JSON / YAML schemas for representing security and privacy control catalogs, control implementations, assessments, and remediation plans in a machine-readable form. NIST develops OSCAL as an open specification; the schemas and models live under `pages.nist.gov/OSCAL` and are versioned as OSCAL 1.x. The version at the time of writing this chapter is in the OSCAL 1.1.x series; verify the current minor against the NIST release notes before locking any specific field names. <!-- needs-research: verify current OSCAL 1.x minor version and pin the exact model-layer field names cited in later snippets -->
+OSCAL — the Open Security Controls Assessment Language — is a NIST-authored suite of XML / JSON / YAML schemas for representing security and privacy control catalogs, control implementations, assessments, and remediation plans in a machine-readable form. NIST develops OSCAL as an open specification; the schemas and models live under `pages.nist.gov/OSCAL` and are versioned as OSCAL 1.x. The 1.1.x line's final patch release is 1.1.3; NIST has since moved to the 1.2.x line (1.2.3 as of mid-2026). Verify the current release against the NIST release notes before locking any specific field names. ([NIST OSCAL releases](https://github.com/usnistgov/OSCAL/releases))
 
 OSCAL is opinionated about what "a controls-based governance regime" looks like structurally. Its model layer decomposes the problem into seven models, each with its own top-level document:
 
@@ -64,7 +64,7 @@ OSCAL out-of-the-box does not know that a model card exists, that ISO/IEC 42001 
 
 **Extension surface 1 — additional control catalogs.** The enterprise authors (or ingests) OSCAL catalogs for control regimes OSCAL does not ship natively. NIST publishes SP 800-53 in OSCAL. The enterprise adds:
 
-- The ISO/IEC 42001 Annex A control catalog, expressed in OSCAL. ISO does not publish this in OSCAL form; the enterprise authors the mapping. <!-- needs-research: check whether any community project has published ISO/IEC 42001 Annex A as an OSCAL catalog; if so, cite it -->
+- The ISO/IEC 42001 Annex A control catalog, expressed in OSCAL. ISO does not publish this in OSCAL form, and as of this writing no widely-adopted community OSCAL catalog for ISO/IEC 42001 Annex A has been published (the `oscal-club/awesome-oscal` curated list does not reference one); the enterprise authors the mapping and watches for a community-maintained catalog to adopt when one lands.
 - The enterprise's own AI-specific controls that go beyond SP 800-53 and Annex A — evaluation-methodology controls, red-team controls, model-monitoring controls, cards-and-documentation controls, supply-chain-evidence controls — expressed as an OSCAL catalog with the enterprise as the source.
 - The NIST AI RMF playbook controls, expressed in OSCAL, where the enterprise has adopted them.
 - A jurisdiction-specific catalog for each regime the enterprise is subject to — an EU AI Act obligations catalog, an SR 11-7 obligations catalog, an FDA PCCP obligations catalog — expressed as controls where each control's statements are the regulatory obligation and its objectives are the assessable clauses. Some regulatory-obligation content is authoritative from the regulator's text; the enterprise's OSCAL representation is a *shape* over that authoritative text, and the shape is what OSCAL adds.
@@ -86,11 +86,11 @@ The classes to declare (each is an entry in the enterprise's authored artefact-c
 | Regulator packet (Article 11, 72, 73, SR 11-7, FDA PCCP) | chapter 05 | `value=regulator-packet-<template-id>` |
 | Substrate log entry references (family 1/2/3) | chapter 02 | typically via `oscal-link` from an assessment observation into a log-store query URI |
 
-Where OSCAL 1.x does not have a first-class field for "artefact class taxonomy," the enterprise uses `props` — OSCAL's typed extension mechanism — with an enterprise-owned namespace (a `ns` URI the enterprise controls) and named properties. This is the intended extension pathway. <!-- needs-research: verify OSCAL's guidance on `props/ns` naming conventions for enterprise extensions and pin the recommended URI shape -->
+Where OSCAL 1.x does not have a first-class field for "artefact class taxonomy," the enterprise uses `props` — OSCAL's typed extension mechanism — with an enterprise-owned namespace (an `ns` URI the enterprise controls) and named properties. OSCAL's guidance is that `ns` be an absolute URI per RFC 3986, that the default namespace `http://csrc.nist.gov/ns/oscal` is reserved for NIST-defined properties, and that enterprises use a URI built on a domain or URN namespace they themselves control to avoid collisions. This is the intended extension pathway. ([NIST OSCAL extension tutorial](https://pages.nist.gov/OSCAL/learn/tutorials/general/extension/))
 
 **Extension surface 3 — profile parameterisation for freshness, retention, and signature discipline.** Each artefact class has properties that vary by tier and jurisdiction — freshness threshold (a model card is "current" if signed within 12 months for tier-3, 6 months for tier-4), retention duration, minimum SLSA level, required-signer role. OSCAL profiles carry parameterisation via `set-parameter`; the enterprise expresses these thresholds as parameters on the controls that assert them, and each tier-and-jurisdiction profile sets the parameter to the appropriate value.
 
-The enterprise does *not* invent an OSCAL extension standard. There is no widely-adopted community-owned OSCAL AI-evidence profile at the time of writing. <!-- needs-research: monitor NIST OSCAL working groups, the OpenControl / ComplianceAsCode communities, and the CNCF supply-chain SIG for an emerging community OSCAL profile for AI-evidence artefacts; adopt when one lands -->
+The enterprise does *not* invent an OSCAL extension standard. There is no widely-adopted community-owned OSCAL AI-evidence profile at the time of writing; the architect monitors the NIST OSCAL working groups, the `oscal-compass` project under CNCF, and the `oscal-club` community index, and adopts an emerging community profile when one lands.
 
 ## A concrete OSCAL catalog snippet
 
@@ -104,7 +104,7 @@ catalog:
     published: 2027-09-06T00:00:00Z
     last-modified: 2027-09-06T00:00:00Z
     version: "1.2.0"
-    oscal-version: "1.1.2"  # <!-- needs-research: verify current 1.1.x point release -->
+    oscal-version: "1.1.3"  # final patch on the 1.1.x line; 1.2.x is the current major line
     parties:
       - uuid: 8b7a3e2d-5f01-4c9a-a3b6-2d1e5c7f8a90
         type: organization
@@ -336,11 +336,12 @@ profile:
         values: ["3"]   # tier-4 requires SLSA L3
       - param-id: ai-log-01_min-retention-tier4
         values: ["10y"]
-  # <!-- needs-research: verify the OSCAL profile field name for
-  #      responsibility-assignment overlay; OSCAL binds responsibilities
-  #      in the SSP layer rather than the profile layer, and the profile
-  #      layer's mechanism for expressing party-scoped applicability
-  #      should be pinned to the current spec -->
+  # Note: OSCAL expresses responsibility binding through `responsible-role`
+  #       and `responsible-party` (party-uuid references), which are carried
+  #       on the SSP's control-implementations and on component-definitions
+  #       rather than on the profile layer; the profile here declares only
+  #       the control-selection and parameter-value overlays, and the per-
+  #       system responsibility assignment lands in the SSP.
 ```
 
 The profile is short — that is the point. It expresses only the delta from the underlying catalog: which controls are in scope, what parameter values apply, what responsibility overlays hold. When a new tier-4 EU system is onboarded the enterprise instantiates a component-definition and an SSP that reference this profile; every control in the profile is either implemented on the system, marked out-of-scope with justification, or flagged as gap.

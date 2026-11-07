@@ -14,7 +14,7 @@ The three roles carry different competences, sit at different levels, and produc
 
 ### `ai-governance-analyst` (level 15) — evidence records author
 
-The analyst is the *doing* seat inside the evidence architecture — the role whose day-to-day is authoring, filing, indexing, and updating evidence records against the schemas the architect authored. The role reports upward through the head of AI governance, not through the architect; the architect writes the role-scope contract the head of AI governance ratifies. <!-- needs-research: confirm AICG role-scope document for `ai-governance-analyst` at level 15 covers the outputs enumerated below -->
+The analyst is the *doing* seat inside the evidence architecture — the role whose day-to-day is authoring, filing, indexing, and updating evidence records against the schemas the architect authored. The role reports upward through the head of AI governance, not through the architect; the architect writes the role-scope contract the head of AI governance ratifies. The AICG `ai-governance-analyst-learning` curriculum at the analyst level covers the operational-analyst focus areas (risk registers, model inventories, framework crosswalks, impact-assessment drafting, control-tracking) from which the outputs below are specialised for the evidence-architecture surface.
 
 Primary outputs the evidence architecture depends on:
 

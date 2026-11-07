@@ -41,7 +41,7 @@ Regulator asks that require a bespoke response fall into two classes. Class one:
 
 Article 11 of Regulation (EU) 2024/1689 requires providers of high-risk AI systems to prepare technical documentation before placing the system on the market, kept up to date, structured per Annex IV of the Regulation. Annex IV's shape covers the categories of information a notified body will assess against the applicable harmonised standards during conformity assessment.
 
-Template shape (structured to Annex IV; verify exact numbering against consolidated text): <!-- needs-research: verify Annex IV item numbering against the current consolidated Regulation (EU) 2024/1689 text -->
+Template shape (structured to Annex IV's nine items: general description; elements and development process; monitoring, functioning and control; appropriateness of performance metrics; risk-management system per Article 9; changes made over the lifecycle; applied harmonised standards; EU declaration of conformity per Article 47; and the post-market performance evaluation system per Article 72 — see [EUR-Lex 2024/1689 Annex IV](https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng)):
 
 ```yaml
 template:
@@ -97,7 +97,7 @@ template:
     immutability: s3-object-lock-compliance
     signing: cosign keyless
     transparency_log: sigstore-rekor
-    retention: >= 10y from placing-on-market <!-- needs-research: verify duration -->
+    retention: >= 10y from placing-on-market (Article 18)
   reproducibility_guarantee: >
     Re-assembly of this packet against the substrate at the same snapshot_ts
     reproduces the section content byte-for-byte modulo formatting.
@@ -105,7 +105,7 @@ template:
 
 The template's sections are not sacred beyond what the Regulation requires; the *shape* is fixed by Annex IV. Every field a notified body will assess maps to substrate content. Where the substrate is missing content the template needs, the template's assembly pipeline emits a *substrate finding* rather than filling in placeholder text — the finding is a CAPA input, and the packet is not filed until the substrate is complete.
 
-The signature block for Article 11 typically includes the head of AI governance and general counsel; for the highest-risk categories (biometrics; critical infrastructure; the Annex III categories the AI Act treats as most consequential <!-- needs-research: verify Annex III scoping and the sub-categories with elevated attention -->) the AI-accountable executive additionally signs. The EU Declaration of Conformity itself is a separately signed artefact referenced from Section 7.
+The signature block for Article 11 typically includes the head of AI governance and general counsel; for high-risk systems falling within the Annex III categories (biometrics; critical infrastructure; education; employment; essential private and public services such as credit scoring; law enforcement; migration, asylum and border control; administration of justice and democratic processes) the AI-accountable executive additionally signs. The EU Declaration of Conformity itself is a separately signed artefact referenced from Section 7. ([EUR-Lex 2024/1689 Annex III](https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng))
 
 ## Template 2 — EU AI Act Article 72 post-market monitoring
 
@@ -166,9 +166,9 @@ template:
   version: 1.2.0
   applicable_to: high-risk AI systems experiencing a serious incident per Article 3(49) definition
   timeline_discipline:
-    initial_notification_max: 15 days from awareness  # <!-- needs-research: verify Article 73 timeline -->
-    accelerated_notification_max: 2 days from awareness  # for widespread infringement / serious harm categories
-    life-critical_notification_max: 10 days  # <!-- needs-research: verify categorised timelines -->
+    initial_notification_max: 15 days from awareness  # Article 73(2) default ceiling
+    accelerated_notification_max: 2 days from awareness  # Article 73(3): widespread infringement or serious disruption of critical infrastructure
+    life-critical_notification_max: 10 days  # Article 73(4): where the incident involved a person's death
   sections:
     - id: 1-system-identity
       source: system-card.system-identity
@@ -192,7 +192,7 @@ template:
   filing:
     immutability: s3-object-lock-compliance + rekor
     subsequent_updates: filed as versioned amendments; each amendment retains the prior record
-    retention: >= 10y <!-- needs-research: verify -->
+    retention: >= 10y (aligned with Article 18 documentation-keeping horizon)
 ```
 
 The critical architectural discipline for Article 73 is the *speed* of assembly. When a serious incident fires the template must be assembleable within the notification window without heroics. The reproducibility guarantee applies with a variant: re-assembly at T+7 days after the initial notification, using the substrate at incident-time-plus-2 (representing the state the enterprise knew at initial notification), reproduces the initial notification content.
@@ -253,7 +253,7 @@ SR 11-7's independence discipline (validation independent of development) is enf
 
 ## Template 5 — FDA PCCP
 
-The FDA Predetermined Change Control Plan (PCCP) allows manufacturers of AI/ML-enabled medical device software to describe anticipated modifications and the methods that will be used to evaluate them, so that anticipated modifications can be implemented without a new pre-market submission. The FDA finalised guidance on PCCPs for AI-enabled device software in 2024. <!-- needs-research: confirm exact title and finalisation date of the FDA PCCP guidance for AI/ML-enabled device software -->
+The FDA Predetermined Change Control Plan (PCCP) allows manufacturers of AI/ML-enabled medical device software to describe anticipated modifications and the methods that will be used to evaluate them, so that anticipated modifications can be implemented without a new pre-market submission. The FDA issued final guidance titled "Marketing Submission Recommendations for a Predetermined Change Control Plan for Artificial Intelligence-Enabled Device Software Functions" on 4 December 2024. ([FDA final guidance, Federal Register 2024-28361](https://www.federalregister.gov/documents/2024/12/04/2024-28361/marketing-submission-recommendations-for-a-predetermined-change-control-plan-for-artificial))
 
 Template shape:
 
@@ -292,8 +292,10 @@ template:
     format: fda-submission-format (eSTAR / eCopy)
     immutability: s3-object-lock-compliance for the enterprise's copy of record;
       FDA electronic submission is the authoritative filing
-    retention: for the device master record lifetime + FDA Part 11 records requirements
-      <!-- needs-research: verify Part 11 record retention scope for AI/ML-enabled software -->
+    retention: per the applicable predicate rule for the device (e.g., 21 CFR 820
+      Quality System Regulation records such as the Device Master Record and Device
+      History Record), with 21 CFR Part 11 governing the trustworthiness of the
+      electronic form of those records rather than setting its own retention horizon
 ```
 
 PCCP submissions are distinctive in that the *modification protocol* is itself a controlled artefact — the plan for what the enterprise will do when the model is retrained or the system is updated within the pre-registered envelope. Modifications within the PCCP envelope do not require re-submission; modifications outside require a new pre-market submission or a supplement. The template's assembly pipeline enforces the boundary by cross-referencing the family-1 log at submission time against the PCCP's declared envelope.

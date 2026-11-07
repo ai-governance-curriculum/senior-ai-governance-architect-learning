@@ -50,7 +50,7 @@ For the enterprise slice the ML-BOM is emitted by the training pipeline at build
 
 ### SPDX 3.0 with the AI profile
 
-SPDX (Software Package Data Exchange, Linux Foundation) is the ISO/IEC 5962-standardised SBOM format. SPDX 3.0 introduces a profile system; the AI profile adds AI-specific fields to describe an AI-related component, and a Dataset profile adds fields specific to datasets. The AI profile fields include AI-specific licence and provenance metadata, including <!-- needs-research: verify exact SPDX 3.0 AI profile field names — the profile at time of writing captures energy consumption, safety risks, standards compliance, hyperparameters, model architecture, use restrictions, but the exact field names should be checked against the SPDX 3.0 specification --> considerations that map roughly to what a model card would disclose but in structured machine-readable form.
+SPDX (Software Package Data Exchange, Linux Foundation) is the ISO/IEC 5962-standardised SBOM format. SPDX 3.0 (released April 2024) introduces a profile system; the AI profile adds AI-specific fields on an `AIPackage` element — including `energyConsumption`, `safetyRiskAssessment`, `hyperparameter`, `modelExplainability`, `informationAboutTraining`, `informationAboutApplication`, `useSensitivePersonalInformation`, `typeOfModel`, `standardCompliance`, `limitation`, and `domain` — and a Dataset profile adds fields specific to datasets. These capture considerations that map roughly to what a model card would disclose but in structured machine-readable form. ([SPDX 3.0 AI profile specification](https://spdx.github.io/spdx-spec/v3.0/model/AI/))
 
 For the enterprise slice SPDX 3.0 with the AI profile is used for two purposes:
 
