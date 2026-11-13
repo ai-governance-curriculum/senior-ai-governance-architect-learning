@@ -16,13 +16,13 @@ Three categories of platform compete for the GRC-for-AI seat in the enterprise s
 
 These are platforms whose founding thesis is AI governance specifically — designed from a blank sheet around the AI system as the unit of governance, the AI risk register as the primary store, and the AI-specific workflow set (impact assessment, model-card intake, fairness attestation, LLM-quality evidence, red-team finding productionisation) as first-class flows.
 
-- Credo AI `<!-- needs-research: verify Credo AI current product scope, workflow coverage, and named integrations as of authoring date against vendor documentation -->`
-- Holistic AI `<!-- needs-research: verify Holistic AI current product scope, workflow coverage, and named integrations as of authoring date against vendor documentation -->`
-- ModelOp `<!-- needs-research: verify ModelOp current product scope, workflow coverage, and named integrations as of authoring date against vendor documentation -->`
-- Monitaur `<!-- needs-research: verify Monitaur current product scope, workflow coverage, and named integrations as of authoring date against vendor documentation -->`
-- Fairly AI `<!-- needs-research: verify Fairly AI current product scope, workflow coverage, and named integrations as of authoring date against vendor documentation -->`
-- Enzai `<!-- needs-research: verify Enzai current product scope, workflow coverage, and named integrations as of authoring date against vendor documentation -->`
-- Trustible `<!-- needs-research: verify Trustible current product scope, workflow coverage, and named integrations as of authoring date against vendor documentation -->`
+- Credo AI — purpose-built AI governance platform spanning discovery, assessment, monitoring, and reporting across models, agents, and applications (https://www.credo.ai/platform)
+- Holistic AI — enterprise AI governance platform organised around discovery, risk assessment, and policy enforcement, with pre-canned mappings to EU AI Act, NIST AI RMF, and ISO/IEC 42001 (https://www.holisticai.com/)
+- ModelOp — AI lifecycle governance platform positioned as a "control tower" for internally-built and third-party AI systems (https://www.modelop.com/)
+- Monitaur — purpose-built AI governance platform covering policy, model inventory, automated testing, and monitoring (https://www.monitaur.ai/platform)
+- Fairly AI — AI governance and compliance platform focused on EU AI Act readiness; now operating alongside Asenion following its 2026 combination with Anch AI (https://www.fairly.ai/)
+- Enzai — AI governance platform spanning shadow-AI discovery and agentic-AI policy enforcement, with mappings to EU AI Act, ISO/IEC 42001, and NIST AI RMF (https://www.enz.ai/)
+- Trustible — enterprise AI governance platform covering intake, risk assessment, monitoring, and multi-framework compliance (https://www.trustible.ai/)
 
 The category's strengths tend to be AI-specific workflow depth and pre-canned control-library mappings against the AI standards suite (NIST AI RMF, ISO/IEC 42001, EU AI Act, sector regimes). The category's structural weaknesses tend to be integration surface into the wider enterprise-GRC stack (where enterprise-GRC platforms already hold IT-general-controls, financial-controls, and privacy-controls state) and the audit-body track record — younger platforms have simply been in fewer certification audits.
 
@@ -30,9 +30,9 @@ The category's strengths tend to be AI-specific workflow depth and pre-canned co
 
 These are established enterprise-GRC platforms — the incumbents in the Archer / ServiceNow / MetricStream / IBM OpenPages / OneTrust seat — extending into AI governance from an installed base the enterprise already runs for financial, operational, and privacy risk.
 
-- ServiceNow AI Control Tower `<!-- needs-research: verify ServiceNow AI Control Tower current product scope, workflow coverage, and named integrations as of authoring date against vendor documentation -->`
-- IBM watsonx.governance `<!-- needs-research: verify IBM watsonx.governance current product scope, workflow coverage, and named integrations as of authoring date against vendor documentation -->`
-- OneTrust AI Governance `<!-- needs-research: verify OneTrust AI Governance current product scope, workflow coverage, and named integrations as of authoring date against vendor documentation -->` (positioning depends on whether the enterprise already runs OneTrust for privacy)
+- ServiceNow AI Control Tower — centralised command centre to govern, manage, secure, and measure AI agents, models, and workflows across ServiceNow and third-party systems (launched May 2025, extended in 2026; see https://newsroom.servicenow.com/press-releases/details/2025/ServiceNow-Launches-AI-Control-Tower-a-Centralized-Command-Center-to-Govern-Manage-Secure-and-Realize-Value-From-Any-AI-Agent-Model-and-Workflow/default.aspx)
+- IBM watsonx.governance — enterprise AI governance product covering lifecycle risk, compliance, and documentation (https://www.ibm.com/products/watsonx-governance)
+- OneTrust AI Governance — AI governance module within OneTrust's broader trust/privacy platform, positioned to turn AI policy into enforceable controls where AI runs (https://www.onetrust.com/solutions/ai-governance/; positioning depends on whether the enterprise already runs OneTrust for privacy)
 
 The category's strengths tend to be integration into the existing enterprise-GRC stack, mature RBAC and audit-trail primitives, and audit-body familiarity through the incumbent's existing certifications. The category's structural weaknesses tend to be depth on AI-specific workflows and evidence semantics — the AI extension is often a schema overlay on an underlying object model that was built for a different risk domain.
 
@@ -40,9 +40,9 @@ The category's strengths tend to be integration into the existing enterprise-GRC
 
 These are platforms whose primary thesis is AI-runtime security, model-inventory discovery, or attack-surface management for AI systems, not GRC. They surface in vendor conversations because they occupy the same market vocabulary and are sometimes mistaken for GRC-for-AI candidates. They are not.
 
-- Cranium `<!-- needs-research: verify Cranium current product scope and positioning as inventory / attack-surface tooling versus GRC platform as of authoring date -->`
-- HydroX AI `<!-- needs-research: verify HydroX AI current product scope and positioning versus GRC platform as of authoring date -->`
-- Verify AI `<!-- needs-research: verify Verify AI current product scope and positioning versus GRC platform as of authoring date -->`
+- Cranium — AI security, inventory / AI-BOM, and attack-surface discovery platform, with governance-mapping layered on top rather than as its core thesis (https://www.cranium.ai/)
+- HydroX AI — AI safety, red-teaming, and runtime-protection vendor (KnowYourAI and Safety Firewall) (https://hydrox.ai/)
+- (plus other emerging AI-nexus security / inventory vendors whose positioning should be checked case-by-case against the "producer-into-the-register" framing below)
 
 The positioning note the architect fixes: these platforms are *producers* into the GRC-for-AI system of record (inventory discovery, attack-surface signal, runtime-security detections) and integrate through the same normalisation layer mod-110 chapter 03 designed for observability producers. They are not GRC-for-AI candidates and evaluating them against the same matrix is a category error. Chapter 05 walks the integration positioning; here the matrix is scoped to platforms that plausibly hold the register.
 
@@ -98,7 +98,7 @@ Each dimension gets a subsection. The pattern is definition, why it matters at l
 
 ### Jurisdiction coverage
 
-**Definition.** The regimes and standards for which the platform ships pre-canned control-library mappings, and — critically — whether the enterprise can bring its own control catalogue (authored in the mod-102 library) without being forced into the vendor's mappings. Target regimes at minimum: EU AI Act, NIST AI Risk Management Framework, ISO/IEC 42001, US SR 11-7 (for regulated model risk), Colorado SB24-205, sector regimes (FDA guidance for AI/ML-enabled medical devices, FINRA and OCC guidance for financial services, HIPAA for health data). `<!-- needs-research: verify current status and specific citation of Colorado SB24-205 and any subsequent amendments -->`
+**Definition.** The regimes and standards for which the platform ships pre-canned control-library mappings, and — critically — whether the enterprise can bring its own control catalogue (authored in the mod-102 library) without being forced into the vendor's mappings. Target regimes at minimum: EU AI Act, NIST AI Risk Management Framework, ISO/IEC 42001, US SR 11-7 (for regulated model risk), Colorado's state-level AI / automated-decision-making regime (Colorado SB24-205 was signed in May 2024, had its effective date pushed from 1 February 2026 to 30 June 2026 by SB25B-004 in the August 2025 special session, and was then repealed and replaced pre-effective-date by SB26-189, which takes effect 1 January 2027 — see https://leg.colorado.gov/bills/sb24-205 and https://leg.colorado.gov/bills/sb26-189), sector regimes (FDA guidance for AI/ML-enabled medical devices, FINRA and OCC guidance for financial services, HIPAA for health data).
 
 **Why it matters at level 50.** Enterprises operate under jurisdictional overlaps mod-104 already covered — a single AI system may sit under EU AI Act, NIST AI RMF, and a sector regime simultaneously. A platform that ships strong mappings for one regime and nothing for the others forces the enterprise to author the missing mappings itself, which the enterprise is already doing in the mod-102 library. The value the platform offers is either that its mappings *accelerate* the enterprise's authoring, or that its schema *hosts* the enterprise's authoring without imposing the vendor's opinions. Both are valuable; a platform that offers neither is scoring poorly on this dimension.
 
