@@ -6,8 +6,8 @@ The US federal executive branch has, over the 2024–2025 memoranda cycle, publi
 
 The pair of memoranda the level-50 architect studies:
 
-- **OMB M-24-18** (October 2024): *Advancing the Responsible Acquisition of Artificial Intelligence in Government.* Companion to the March 2024 M-24-10 governance memorandum. Sets the pre-contract, contract-formation, and post-award obligations federal agencies must impose when acquiring AI systems and AI-enabled services. <!-- needs-research: verify M-24-18 issuance date, section structure, and specific list of minimum practices against the OMB source document; the memorandum has an executive-branch designation and a specific issuance ID that should be confirmed. -->
-- **OMB M-25-22** (April 2025): *Driving Efficient Acquisition of Artificial Intelligence in Government.* Successor memorandum issued under the incoming administration; revises the 2024 shape with an efficiency-and-innovation framing while retaining the risk-and-performance disciplines relevant to consequential AI. <!-- needs-research: verify M-25-22 issuance date, the specific revisions from M-24-18, and the list of minimum practices retained, added, or dropped against the OMB source document. Successor memoranda in a new administration can materially reshape prior obligations. -->
+- **OMB M-24-18** (issued September 24, 2024): *Advancing the Responsible Acquisition of Artificial Intelligence in Government.* Companion to the March 2024 M-24-10 governance memorandum. Set the pre-contract, contract-formation, and post-award obligations federal agencies must impose when acquiring AI systems and AI-enabled services. Rescinded and replaced by M-25-22 on April 3, 2025.
+- **OMB M-25-22** (issued April 3, 2025): *Driving Efficient Acquisition of Artificial Intelligence in Government.* Successor memorandum that explicitly rescinds and replaces M-24-18; applies to any contract awarded pursuant to a solicitation issued after December 26, 2025 (including option renewals after that date). Reframes the discipline toward competitive-and-efficient acquisition while retaining core requirements around performance tracking, risk management, and cross-functional engagement for consequential AI.
 
 Both memoranda sit on top of the broader federal AI shape — the AI in Government Act of 2020, the Advancing American AI Act of 2022 (in the FY23 NDAA), NIST AI 100-1 (AI RMF), NIST AI 600-1 (Generative AI Profile), FAR reforms under way to codify AI-specific acquisition clauses, and the sectoral overlays (federal financial regulator guidance, HHS / VA / DoD AI-specific guidance). The memoranda are what turn "agencies should manage AI risk" into "agencies must include the following clauses when they buy AI-enabled products."
 
@@ -29,7 +29,7 @@ Adaptation of the federal shape is the enterprise's *authored derivation* of an 
 ## What it is not
 
 - **A copy of the memoranda for internal use.** The memoranda are executive-branch instructions to federal agencies; they are not directly applicable to enterprise procurement. Copying the language is neither necessary nor sufficient — the enterprise has to *derive* the shape into its own control library.
-- **FAR-clause drafting.** The FAR itself carries the enforceable acquisition clauses federal agencies use. When and how those clauses codify the M-24-18 / M-25-22 shape is a FAR Council process on its own cadence. <!-- needs-research: verify the current status of FAR AI-specific case openings, proposed rules, and interim rules at reading time. --> The enterprise reads the memoranda for shape; the enterprise's federal-facing legal counsel tracks the FAR proceedings.
+- **FAR-clause drafting.** The FAR itself carries the enforceable acquisition clauses federal agencies use. When and how those clauses codify the M-24-18 / M-25-22 shape is a FAR Council process on its own cadence — one currently playing out inside the Revolutionary FAR Overhaul launched under Executive Order 14275, with AI-adjacent proposed rules (including a GSAR vendor-preference clause at GSAR 552.239-7001 and related FAR Case activity) moving through notice-and-comment on a cycle distinct from the memoranda. The enterprise reads the memoranda for shape; the enterprise's federal-facing legal counsel tracks the FAR proceedings.
 - **A substitute for the enterprise's own risk-based approach.** Federal minimum practices are a floor; the enterprise's tier-4 posture (chapter 02) will often exceed the federal floor on specific dimensions. Adopting the federal floor as the enterprise ceiling is a compliance regression.
 - **A cross-cutting compliance obligation for the enterprise.** Even where the enterprise sells to the federal government, only the specific contracts carry FAR-flowdown obligations. The enterprise does not become subject to the memoranda in the abstract.
 
@@ -44,7 +44,7 @@ Agencies must, before soliciting an AI-enabled product or service:
 - Conduct AI-specific market research covering available capabilities, disclosed safety and performance evidence, vendor evaluation practices, and known risks.
 - Identify whether the intended use is *rights-impacting* (affects individuals' rights, benefits, or access to essential services) or *safety-impacting* (affects physical safety or critical infrastructure), or both.
 - Define required contract deliverables, evaluation criteria, and performance metrics against the intended use — not generic AI-capability descriptions.
-- Define the human-oversight, notification, and redress requirements that the acquisition must support at delivery. <!-- needs-research: verify the pre-solicitation requirements against the M-24-18 / M-25-22 texts; the specific enumeration and any changes across the two memoranda should be confirmed. -->
+- Define the human-oversight, notification, and redress requirements that the acquisition must support at delivery. The specific enumeration evolved from M-24-18 to M-25-22; the architect reads the currently-controlling memorandum (M-25-22, effective for solicitations issued after December 26, 2025) for the authoritative list.
 
 ### Solicitation — vendor-representation and evaluation-criteria requirements
 
@@ -52,7 +52,7 @@ Solicitations must:
 
 - Require vendors to represent whether the offering incorporates AI (and, in some regimes, whether it uses generative AI), and to disclose supply-chain and training-data information sufficient to support the agency's diligence.
 - Include AI-specific evaluation criteria — the vendor's safety-evaluation practices, red-team practices, incident-notification commitments, supply-chain evidence, and demonstrated performance on the agency's intended use.
-- Include the applicable IP, data-use, and rights posture — the agency's rights in enterprise-generated inputs and vendor-generated outputs, the vendor's IP in the underlying model, and the composition of these against federal-data handling rules. <!-- needs-research: verify the solicitation-content requirements against the memoranda; specific list items may change between M-24-18 and M-25-22. -->
+- Include the applicable IP, data-use, and rights posture — the agency's rights in enterprise-generated inputs and vendor-generated outputs, the vendor's IP in the underlying model, and the composition of these against federal-data handling rules. The specific solicitation-content enumeration shifted across the M-24-18 → M-25-22 transition; M-25-22 in particular emphasises contract terms protecting government data (including bars on training publicly-available models on non-public government data without consent).
 
 ### Contract-formation — minimum acquisition practices and clauses
 
@@ -63,7 +63,7 @@ Contracts for AI-enabled products or services (with additional obligations for r
 - **Supply-chain evidence and provenance.** Vendors provide evidence about the AI's training data, model provenance, and supply-chain integrity to the extent applicable to the offering.
 - **Documentation.** Vendors deliver documentation sufficient for the agency to understand the AI's capabilities, limitations, and intended use.
 - **Human-oversight and appeal support.** For rights-impacting or safety-impacting AI, the offering supports the agency's human-oversight, affected-individual notification, and appeal / redress obligations.
-- **Data-use limits and IP posture.** Vendor's use of agency-provided data is bounded; the agency's data-rights posture on inputs, outputs, and derived artefacts is declared. <!-- needs-research: verify the contract-formation minimum practices against the specific memorandum text; the M-24-18 attachments and the M-25-22 revisions likely enumerate specific practices that should be confirmed. -->
+- **Data-use limits and IP posture.** Vendor's use of agency-provided data is bounded; the agency's data-rights posture on inputs, outputs, and derived artefacts is declared. The enumerated minimum practices evolved from M-24-18's attachments to M-25-22's streamlined framing; the architect treats the currently-controlling memorandum (M-25-22) as the authoritative list and tracks revisions through the mod-104 watchdog.
 
 ### Post-award — performance monitoring and continuous risk management
 
@@ -71,11 +71,11 @@ After award:
 
 - Agencies monitor the AI's performance against the acquired-performance metrics and the applicable minimum practices; performance shortfalls trigger contract-remedy processes.
 - Vendors deliver periodic reporting on the AI's continued conformance with acquisition-time commitments.
-- Waivers of specific minimum practices are permitted only through documented processes that carry rationale and expiry. <!-- needs-research: verify the post-award obligations and waiver-process shape against the memoranda; specific implementation guidance from OMB and agency-level policies fills in the detail. -->
+- Waivers of specific minimum practices are permitted only through documented processes that carry rationale and expiry. The specific shape of the waiver process — the authorising official, publication / reporting discipline, and expiry horizon — is set by the governance memorandum (M-25-21, succeeding M-24-10) and by agency-level implementing guidance; the architect reads the currently-controlling versions.
 
 ### The rights-impacting vs safety-impacting distinction (M-24-10 heritage)
 
-The M-24-10 governance memorandum introduced the *rights-impacting* and *safety-impacting* designations, and M-24-18 / M-25-22 inherit them for the acquisition context. Rights-impacting AI is broadly AI whose outputs meaningfully influence decisions about individuals' rights, benefits, access to services, or freedoms; safety-impacting AI is broadly AI whose outputs meaningfully influence physical safety or the reliability of critical infrastructure. Both designations carry additional minimum practices — expanded pre-deployment testing, ongoing monitoring, human-oversight, notification, and appeal obligations — beyond the baseline for AI generally. The M-24-10 attachments enumerate specific example use cases per designation. <!-- needs-research: verify the M-24-10 rights-impacting / safety-impacting definitions and example lists at authoring time; the M-25 revision may refine or extend. -->
+The M-24-10 governance memorandum (March 28, 2024) introduced the *rights-impacting* and *safety-impacting* designations, and M-24-18 inherited them for the acquisition context. **M-24-10 has since been rescinded and replaced by M-25-21** (April 3, 2025), which consolidated the two categories into a single *high-impact AI* designation — AI whose output "serves as a principal basis for decisions or actions that have a legal, material, binding, or significant effect on rights or safety," with a narrowed list of presumed use cases and a unified set of minimum practices for high-impact systems. The architect preserves the rights-impacting / safety-impacting distinction *internally* (because EU, state, and sectoral regimes still speak that way) while mapping it to M-25-21's high-impact designation for federal-customer contexts.
 
 ## The enterprise adaptation — six mapping domains
 
@@ -112,7 +112,7 @@ Illustrative bundle (shape, not exhaustive):
 ```yaml
 enterprise_mandatory_practices:
   version: 1.0.0
-  derivation: adapted from OMB M-24-18 minimum practices and M-25-22 revisions <!-- needs-research: verify enumeration against source text -->
+  derivation: adapted from the federal AI acquisition memoranda sequence (M-24-18 superseded by M-25-22) and the governance memoranda (M-24-10 superseded by M-25-21); enumeration is the architect's composition, not a verbatim lift
 
   # Applies to all AI vendor engagements (any tier, any designation)
   all_engagements:

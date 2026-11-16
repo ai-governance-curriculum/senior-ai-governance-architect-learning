@@ -334,7 +334,11 @@ vendor_incident_routing:
       GDPR Article 33/34, sectoral incident-reporting obligations, or specific
       state / sector AI-incident-reporting requirements.
     timeline:
-      - EU AI Act Article 73: per Article 73 timelines (verify against final text). <!-- needs-research: confirm Article 73 timelines and severity categories against the current consolidated Regulation (EU) 2024/1689 text -->
+      - EU AI Act Article 73 (Regulation (EU) 2024/1689): serious-incident report
+        not later than 15 days after awareness; 10 days where a person has died;
+        2 days for widespread infringement or serious-and-irreversible disruption
+        of critical infrastructure; initial-incomplete-then-complete reporting
+        permitted under Art. 73(5).
       - GDPR Article 33: 72 hours to supervisory authority where notifiable.
       - Sectoral: per applicable rule (SEC, OCC, HIPAA, etc.).
     seats:

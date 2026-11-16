@@ -17,7 +17,7 @@ The schedule is what turns the exercise-01–03 governance artefacts from a T=0 
 - The mod-106 chapter on the risk register — vendor incidents and drift signals feed risk-register updates.
 - The mod-107 chapter 03 walk-through of ongoing assurance — the first-line evaluation signals (E3 trigger) originate here.
 - The mod-108 chapter 02 walk-through of the audit-log substrate — monitoring events land in the substrate under specified event types.
-- Access to the primary references — SR 23-4 (ongoing-monitoring phase); ISO/IEC 42001 Clause 9 (monitoring, measurement, analysis, evaluation) and Clause 10 (nonconformity and corrective action); EU AI Act Article 72 (post-market monitoring plan) and Article 73 (serious-incident reporting) <!-- needs-research: verify Article 73 timelines and categories against final text -->; GDPR Article 33 (72-hour notification); sector overlays. See [`../resources.md`](../resources.md).
+- Access to the primary references — SR 23-4 (ongoing-monitoring phase); ISO/IEC 42001 Clause 9 (monitoring, measurement, analysis, evaluation) and Clause 10 (nonconformity and corrective action); EU AI Act Article 72 (post-market monitoring plan) and Article 73 (serious-incident reporting — 15-day general ceiling, 10 days where a person has died, 2 days for widespread infringement or serious-and-irreversible disruption of critical infrastructure); GDPR Article 33 (72-hour notification); sector overlays. See [`../resources.md`](../resources.md).
 
 ## Scenario
 

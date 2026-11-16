@@ -41,7 +41,7 @@ Characteristic evidence expectation:
 - Publisher-signed attestation of the checkpoint where offered (Hugging Face's model provenance features, publisher-run Sigstore attestations, publisher's own signature).
 - Publisher-supplied model card content — training-data disclosure to the extent published, evaluation results, safety-tuning approach, intended-use disclosure.
 - CycloneDX ML-BOM referencing the model component or SPDX 3.0 AI-profile document if the publisher provides one; the enterprise generates its own if the publisher does not, capturing what is knowable.
-- SLSA provenance of the *distribution chain* to the extent the publisher supports (currently limited across open-weight distribution; the discipline is aspirational for many publishers). <!-- needs-research: verify the current state of SLSA / Sigstore adoption by major open-weight model publishers at reading time; adoption is moving quickly across the Hugging Face + independent-publisher ecosystem. -->
+- SLSA provenance of the *distribution chain* to the extent the publisher supports. Hugging Face supports Sigstore-based model signing and GPG-signed commits as Hub-native provenance mechanisms, but observed adoption remains sparse (empirical studies find signed commits on a small single-digit fraction of Hub repositories), so the discipline remains aspirational for most publishers and the enterprise plans for partial coverage.
 
 ### Class 2 — Vendor-supplied fine-tunes (delivered as weights)
 

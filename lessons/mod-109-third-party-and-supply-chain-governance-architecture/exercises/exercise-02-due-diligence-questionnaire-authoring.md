@@ -73,7 +73,7 @@ For each of the five remaining categories:
 - Category scope in 3–5 sentences per chapter 03.
 - Reviewer seat map for the category (per chapter 03's reviewer table).
 - Target question count for tier-3 per the coverage matrix.
-- SIG / CAIQ composition boundary — for category 2 specifically, name the SIG sections the DDQ references (candidate: SIG A – Enterprise Risk Management, SIG C – Security Policy, SIG G – Human Resources, SIG H – Operations Management, SIG I – Compliance, SIG J – Business Continuity Planning, SIG K – Physical and Environmental Security, SIG L – Communications, SIG M – Server Security, SIG N – Endpoint Security, SIG O – Cloud Security, SIG U – Privacy, SIG V – Third-Party Risk Management) <!-- needs-research: verify the current SIG section-letter taxonomy and which sections are load-bearing for AI-specific composition at the current SIG release --> and which AI-specific questions category 2 adds beyond SIG.
+- SIG / CAIQ composition boundary — for category 2 specifically, name the SIG domains the DDQ references. The current SIG release (SIG 2026) organises content into 21 risk domains with letter identifiers that evolve across releases; the AI-specific domain (Domain S — Artificial Intelligence) was added in the 2025 edition and maps to NIST AI RMF 1.0 and ISO/IEC 42001:2023. The architect pins the specific section letters against the SIG workbook version in force at authoring time rather than hard-coding them, since letter assignments have shifted across releases. Name which AI-specific questions category 2 adds beyond SIG.
 - At least three fully-authored questions per category (schema-instantiated) to establish the density.
 
 Specific attention:
