@@ -22,22 +22,23 @@ The presumption is rebuttable, not absolute. If a supervisory authority finds th
 
 ## The CEN-CENELEC JTC 21 programme
 
-CEN and CENELEC established Joint Technical Committee 21 — *Artificial Intelligence* — in 2021. Its work programme, driven by the European Commission's Standardisation Request in support of the EU AI Act (originally issued in draft in 2022 and formally issued in 2023, with revisions to align with the final Regulation text), produces the harmonised standards that will supply presumption of conformity for the Act's essential requirements.
+CEN and CENELEC established Joint Technical Committee 21 — *Artificial Intelligence* — in 2021. Its work programme is driven by the European Commission's Standardisation Request in support of the EU AI Act — originally **M/593** (Commission Implementing Decision C(2023) 3215, issued 22 May 2023, with an initial delivery deadline of 30 April 2025) — which was **repealed and replaced on 23 June 2025 by M/613** (Implementing Decision C(2025) 3871) to align with the final Regulation (EU) 2024/1689 text and to extend the deadline to **28 February 2027**. The horizontal portfolio covers Articles 9-15 (risk management, data governance, technical documentation, logging, transparency, human oversight, accuracy/robustness/cybersecurity), Article 17 (AIMS), and Articles 43-48 (conformity assessment).
 
-<!-- needs-research: verify the current Commission Standardisation Request in support of the EU AI Act (the M/ mandate identifier and the exact scope after the alignment revisions). The chapter's characterisation of the request as covering Articles 9-15 essential requirements plus AIMS is correct in substance but the specific mandate identifier and revision history should be pinned. -->
+**The standards work items under JTC 21 include** (non-exhaustive; the programme is under active development). Status is as of late 2026:
 
-**The standards work items under JTC 21 include** (non-exhaustive; the programme is under active development):
+- **EN 18286:2026 — Quality management system (Article 17 / AIMS).** Published 22 July 2026 and **cited in the OJEU 14 October 2026** (Implementing Decision (EU) 2026/2274). **The first and, at time of writing, the only JTC 21 deliverable cited as a harmonised standard under the AI Act.**
+- **prEN 18228 — AI risk management (Article 9).** Homegrown EN (ISO/IEC 23894 is *not* being used as the harmonised Art 9 standard). Enquiry closed 30 July 2026 and, per public reporting, failed the weighted vote; under approval and comment resolution.
+- **prEN 18229-1 — Trustworthiness framework / logging (Article 12).** Enquiry closed with 443 comments; comment resolution ongoing.
+- **prEN 18229-2 — Transparency (Article 13).** Commission pre-enquiry review.
+- **prEN 18229-3 — Human oversight (Article 14).** Public enquiry (closed 22 October 2026).
+- **prEN 18229-4 / -5 — Accuracy and robustness (Article 15).** Drafting.
+- **prEN 18282 — Cybersecurity of AI (Article 15).** Enquiry rejected; scope re-balloted September 2026.
+- **prEN 18283 — Bias management (Article 10(2)(f)-(g)).** Commission pre-enquiry review.
+- **prEN 18284 — Dataset quality and governance (Article 10).** Commission pre-enquiry review.
+- **prEN 18285 — Conformity assessment (Articles 43-48 / Annex VII).** Commission pre-enquiry review.
+- **prEN ISO/IEC 42001 — AI management system (ISO adoption, parallel to EN 18286).** Under approval; final vote scheduled 8 June 2027.
 
-- **AI risk management** — a standard aligned to Article 9 (risk-management system). Draws on ISO/IEC 23894 shape.
-- **AI trustworthiness framework** — a standard aligned to the trustworthiness characteristics that cut across Articles 9-15.
-- **Quality of AI systems and quality management for AI systems** — a standard aligned to Article 17 (quality management system) and drawing on ISO/IEC 42001 shape.
-- **Bias mitigation** — a standard aligned to Article 10 (data and data governance) bias-provisions and to the general non-discrimination essential-requirement thread.
-- **Trustworthiness characterisation of AI systems** — a standard on the characterisation and measurement of AI-system trustworthiness properties.
-- **Cybersecurity of AI systems** — a standard aligned to Article 15 (cybersecurity of high-risk AI systems).
-- **AI system logging** — a standard aligned to Article 12 (automatically-generated logs).
-- **Conformity assessment of AI systems** — a standard on assessment methodology, addressing Annex VI internal-conformity-assessment shape.
-
-<!-- needs-research: pin the current work-item list for JTC 21, the current publication or draft status of each item (pre-committee draft, committee draft, enquiry, formal vote, published, referenced in OJEU), and the specific reference numbers assigned. As of writing, some items are drafts and others have progressed to formal vote or publication. -->
+In October 2025 the CEN and CENELEC Technical Boards adopted exceptional acceleration measures because no harmonised standards had yet been cited in the OJEU; the first citation (EN 18286) followed a year later.
 
 **Adoption of ISO/IEC deliverables.** JTC 21 works closely with ISO/IEC JTC 1 SC 42 (Artificial Intelligence). Some JTC 21 standards are essentially adoption-with-modification of SC 42 deliverables (ISO/IEC 42001 for the AIMS shape; ISO/IEC 23894 for risk management; ISO/IEC 24029 for robustness; ISO/IEC TR 24028 for trustworthiness). Where an SC 42 standard aligns cleanly with the EU AI Act essential requirements, JTC 21 adopts it (often with an EN prefix — for example EN ISO/IEC 42001 as the European adoption of ISO/IEC 42001, with any EU-specific Annexes or modifications). Where the SC 42 shape does not fit the Act's requirements, JTC 21 produces a new EN standard.
 
