@@ -34,7 +34,7 @@ Not-in-scope for the analyst:
 
 ### `ai-risk-engineer` (level 25) — risk-engineering evidence slice producer
 
-The risk engineer is the *methodology owner* for the risk-engineering evidence slice — the seat that produces the risk-side content the substrate carries and that the card family, the regulator packagings, and the OSCAL catalog each project. The role reports (as with the analyst) through the head of AI governance; the architect writes the role-scope contract the head of AI governance ratifies. <!-- needs-research: confirm AICG role-scope document for `ai-risk-engineer` at level 25 covers the outputs enumerated below -->
+The risk engineer is the *methodology owner* for the risk-engineering evidence slice — the seat that produces the risk-side content the substrate carries and that the card family, the regulator packagings, and the OSCAL catalog each project. The role reports (as with the analyst) through the head of AI governance; the architect writes the role-scope contract the head of AI governance ratifies. The AICG [`ai-risk-engineer-learning`](https://github.com/ai-governance-curriculum/ai-risk-engineer-learning) curriculum covers the methodology surface (harm modelling, quantification, red-team / adversarial-ML / fairness / privacy / guardrail engineering, risk-register population, MRM engineering, incident RCA) from which the outputs below are specialised for the evidence-architecture surface.
 
 Primary outputs the evidence architecture depends on:
 
@@ -53,7 +53,7 @@ Not-in-scope for the risk engineer:
 
 ### `ai-evaluation-engineer` (level 35) — assurance evidence slice packager, peer
 
-The evaluation engineer is the *peer* seat in this coordination — one level below the architect, coordinated horizontally rather than vertically, running its own methodology domain against a shared boundary. The architect and the evaluation engineer are joint stewards of a specific set of boundary artefacts named below. Contracts across peer boundaries are structurally distinct from role-scope contracts with downstream roles; the "peer-to-peer coordination contract" section below designs it. <!-- needs-research: confirm AICG role-scope document for `ai-evaluation-engineer` at level 35 covers the outputs enumerated below -->
+The evaluation engineer is the *peer* seat in this coordination — one level below the architect, coordinated horizontally rather than vertically, running its own methodology domain against a shared boundary. The architect and the evaluation engineer are joint stewards of a specific set of boundary artefacts named below. Contracts across peer boundaries are structurally distinct from role-scope contracts with downstream roles; the "peer-to-peer coordination contract" section below designs it. The AICG [`ai-evaluation-engineer-learning`](https://github.com/ai-governance-curriculum/ai-evaluation-engineer-learning) curriculum covers the release-assurance / audit-trail / regulator-facing methodology surface from which the outputs below are specialised for the evidence-architecture boundary.
 
 Primary outputs the evidence architecture depends on:
 

@@ -103,8 +103,8 @@ The policy sketch must be readable by a policy engineer without the design docum
 
 Sketch one CycloneDX 1.6 ML-BOM for a specific system in your scenario. Headline fields only, not full enumeration. Include:
 
-- Top-level: `bomFormat` = `"CycloneDX"`; `specVersion` (mark `<!-- needs-research: confirm 1.6 or later per current CycloneDX release -->`); `serialNumber` (URN format); `version` (integer, monotonically increasing per BOM revision); `metadata` with at minimum `timestamp` and `tools`.
-- `components` array with **at least one `machine-learning-model` component**. For that component include: `type`, `bom-ref`, `name`, `version`, `hashes`, `licenses`, and the ML-model extension fields — model card reference by URL, training-data manifests referenced by dataset ID, model architecture / algorithm indication. Mark `<!-- needs-research: verify current CycloneDX 1.6 field names for mlModel / modelCard / considerations / datasets -->` at the points where the exact field name should be checked against the published spec rather than invented.
+- Top-level: `bomFormat` = `"CycloneDX"`; `specVersion` (`1.6` — the first spec release carrying the first-class ML-BOM shape — or `1.7` for the current ratified spec, which is backward compatible with 1.4–1.6; see [`cyclonedx.org/docs/1.6/json/`](https://cyclonedx.org/docs/1.6/json/) and [`github.com/CycloneDX/specification/releases`](https://github.com/CycloneDX/specification/releases)); `serialNumber` (URN format); `version` (integer, monotonically increasing per BOM revision); `metadata` with at minimum `timestamp` and `tools`.
+- `components` array with **at least one component of `type: "machine-learning-model"`**. For that component include: `type`, `bom-ref`, `name`, `version`, `hashes`, `licenses`, and the `modelCard` object (the ML-specific first-class field on `machine-learning-model` components, with sub-objects `modelParameters` — carrying `datasets` and other construction parameters — `quantitativeAnalysis`, and `considerations`). See [`cyclonedx.org/docs/1.6/json/`](https://cyclonedx.org/docs/1.6/json/) for the authoritative field list.
 - `dependencies` — express at least one dependency edge (the fine-tune depends on its base model; the RAG depends on the retrieval-index BOM).
 - At least one `licenses` declaration on a component. If the licence is not on the enterprise's `permitted` list, name the disposition (`permitted-with-notice` with the notice text; or a marked exception).
 - A `properties` block on the model component pointing back to the model card by URL, the SLSA attestation by digest, and the substrate ingestion-event ID.
@@ -115,9 +115,9 @@ Do not enumerate every possible field. Sketch enough that a downstream reader ca
 
 Sketch one in-toto v1 envelope carrying a SLSA provenance predicate for the same artefact your ML-BOM describes. Include:
 
-- `_type` = `"https://in-toto.io/Statement/v1"` (mark `<!-- needs-research: verify current in-toto Statement URI -->`).
+- `_type` = `"https://in-toto.io/Statement/v1"` (the stable v1 Statement type URI; see [`slsa.dev/spec/v1.0/provenance`](https://slsa.dev/spec/v1.0/provenance) and the in-toto attestation spec).
 - `subject` — an array with at least one subject describing the model artefact: `name` and `digest` (SHA-256 of the model artefact); the digest must match the digest declared in the ML-BOM's model component's `hashes` field.
-- `predicateType` — the SLSA provenance predicate URI at the level the artefact targets (mark `<!-- needs-research: verify current SLSA provenance predicate URI (v1.0 vs. v0.2) and confirm the exact predicate string for the enterprise's chosen level -->`).
+- `predicateType` — the SLSA provenance predicate URI at the level the artefact targets (`https://slsa.dev/provenance/v1` for SLSA v1.0 and later Build-track levels; the older `https://slsa.dev/provenance/v0.2` predicate remains in use where v0.2 producers have not yet migrated — see [`slsa.dev/spec/v1.0/provenance`](https://slsa.dev/spec/v1.0/provenance)).
 - `predicate`:
   - `buildDefinition.buildType` — a URI identifying the enterprise's training-build type (e.g. `https://enterprise.corp/build-types/pytorch-fine-tune/v1`).
   - `buildDefinition.externalParameters` — the declared inputs to the build: base checkpoint reference (URL or digest), training dataset references (dataset IDs matching the SPDX records), hyperparameter file reference, code commit SHA.
